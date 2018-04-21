@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "noEmitHelpers":false,
+    "removeComments": true,
+    "sourceMap": true,
+    "declaration": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "lib": [
+      "es2016",
+      "dom"
+    ],
+    "types": [
+      "node"
+    ]
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts",
+    "node_modules"
+  ]
+}

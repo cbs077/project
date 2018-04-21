@@ -1,0 +1,8 @@
+.results-count {
+ //   margin: 20px 0;
+    padding: 8px 0;
+}
+
+.pagination a {
+    cursor: pointer;
+}
