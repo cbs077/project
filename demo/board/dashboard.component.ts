@@ -5,24 +5,26 @@ import {Person} from '../mock-data.service';
 
 @Component({
   selector: 'app-dashboard',
-  template: ` <!-- <div>test:{{test}}</div> <div class="container-fluid bg-1 text-center"></div> -->
-   <!--  <div class="w3-example mx-auto col-8">  -->
-      
-       <table  *ngIf="detail_exists === true" class="table table-bordered mx-auto col-8">
-            <thead>
-              <tr>
-                <td style="width: 20%">{{username}}</td>
-                <td style="width: 40%">Lastname</td>
-                <td style="width: 40%">Email</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                 <td colspan="100%" [innerHTML]="myHtml"></td>                        
-              </tr>
-            </tbody>
-      </table>
-          
+  template: `  
+           <table  *ngIf="detail_exists === true" class="table table-bordered mx-auto col-12" >
+                <thead>
+                  <tr>
+                    <td style="width: 20%">{{username}}</td>
+                    <td style="width: 40%">Lastname</td>
+                    <td style="width: 40%">Email</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                     <td colspan="100%" [innerHTML]="myHtml"></td>                        
+                  </tr>
+                </tbody>
+           </table>
+           <div class="float-right" *ngIf="detail_exists === true">
+                <button type="button" class="btn btn-primary">수정</button>
+                <button type="button" class="btn btn-primary">삭제</button>
+           </div>
+              
    <!--      <button type="button" class="btn btn-info">1</button>
    </div> -->
    

@@ -9,6 +9,7 @@ import {TableStateService} from '../table-state.service';
 import {TableState} from '../table-state';
 
 @Component({
+    moduleId: module.id,
     selector: 'ngx-iq-table',
     template: `<table class="table table-bordered table-striped">
         <thead>
@@ -31,7 +32,7 @@ import {TableState} from '../table-state';
             </th>
         </tr>
         </thead>
-        <tbody>
+        <tbody class="body">
         <ng-template ngFor [ngForOf]="resultsPage.results" [ngForTemplate]="rows"  ></ng-template>
         </tbody>
     </table>

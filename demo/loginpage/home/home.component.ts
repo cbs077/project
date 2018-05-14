@@ -17,6 +17,7 @@ import { UserService } from '../_services/index';
                         </li>
                     </ul>
                     <p><a [routerLink]="['/login']">Logout</a></p>
+                     <router-outlet></router-outlet>
                 </div>
                 `
 })

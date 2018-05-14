@@ -42,7 +42,7 @@
 -->
   <script src="https://cdn.ckeditor.com/4.5.11/full/ckeditor.js"></script>
   
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet">
  
   <style>
   .loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
@@ -51,7 +51,10 @@
 
 <body>
   <app><span class="loading">Loading...</span></app>
- 
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  
 
   <% if (htmlWebpackPlugin.options.googleAnalytics) { %>
     <script type="text/javascript">
@@ -64,6 +67,8 @@
       <% } %>
     </script>
     <script async defer src="https://www.google-analytics.com/analytics.js" type="text/javascript"></script>
+	
+   
     <% } %>
 </body>
 

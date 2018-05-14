@@ -5,17 +5,18 @@ import {ColumnOrder} from './component-wrapper/src/app/column-order';
 
 //import { Http} from '@angular/http';
 import {HttpClient} from "@angular/common/http";
-export class Person {
+export class Board {
     author: number;
     category: string;
     contents: string;
     title: string;
+    published_date: string;
 }
 
 @Injectable()
 export class MockDataService {
 
-    private persons: Person[] = [{
+    private board: Board[] = [{
         'author': 1,
         'title': 'Evelyn',
         'contents': 'Burns',
@@ -26,17 +27,14 @@ export class MockDataService {
 
     }
 
-    public listPersons(from: number, count: number, orderBy: ColumnOrder[] ): Observable<TableResultsPage> {
+    public listboard(from: number, count: number, orderBy: ColumnOrder[] ): Observable<TableResultsPage> {
             
-    
-            const result = this.persons.slice(from, from + count);
-    //      const result = data.slice(from, from + count);
-    //      console.log( "persons", this.persons ) ;  
+            const result = this.board.slice(from, from + count);
             
             const pr = new TableResultsPage();
             pr.count = count;
             pr.from = from;
-            pr.total = this.persons.length;
+            pr.total = this.board.length;
             pr.results = result;
         
             console.log( "result", result );
@@ -47,23 +45,23 @@ export class MockDataService {
     }
     public setdata(data){
         console.log( "setdata", data );
-        this.persons = data ;
+        this.board = data ;
                
     }
     private sortFunction(order) {
-        return (person1: Person, person2: Person) => {
+        return (board1: board, board2: board) => {
             if ('asc' === order.direction) {
-                if (person1[order.property] > person2[order.property]) {
+                if (board1[order.property] > board2[order.property]) {
                     return 1;
                 }
-                if (person1[order.property] < person2[order.property]) {
+                if (board1[order.property] < board2[order.property]) {
                     return -1;
                 }
             } else {
-                if (person1[order.property] < person2[order.property]) {
+                if (board1[order.property] < board2[order.property]) {
                     return 1;
                 }
-                if (person1[order.property] > person2[order.property]) {
+                if (board1[order.property] > board2[order.property]) {
                     return -1;
                 }
             }

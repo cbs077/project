@@ -7,9 +7,16 @@ import {FooterComponent} from './footer/footer.component';
 import {TableStateService} from './table-state.service';
 import {CommonModule} from '@angular/common';
 
+import { RouterModule, Routes } from '@angular/router';
+import {WriteComponent} from '../../../board/write.component';
 @NgModule({
     imports: [
-        CommonModule
+        CommonModule,
+        RouterModule.forRoot([
+          { path: 'write',  component: WriteComponent },       
+ 
+    ],{useHash: true} ),
+
     ],
     declarations: [
         TableComponent,

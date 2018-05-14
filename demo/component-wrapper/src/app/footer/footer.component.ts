@@ -1,13 +1,16 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TableResultsPage} from '../table-results-page';
 import {FooterLegend} from './footer-legend';
+import { Router, ActivatedRoute } from '@angular/router';
 
 const PAGES_LIMIT = 6;
 
 @Component({
     selector: 'ngx-iq-footer',
-    template: `<div class="row" *ngIf="getTotalPages() > 0">
-    <div class="col-sm-6">
+    template: `
+<div class="row" *ngIf="getTotalPages() > 0">
+    <div class="col-2"></div>
+<!--<div class="col-sm-6 ">
         <div class="pull-left">
             <div class="results-count" *ngIf="!getTotal() || getTotal() === 0">
                 {{ footerLegend.noresults }}
@@ -18,25 +21,30 @@ const PAGES_LIMIT = 6;
             </div>
         </div>
     </div>
-    <div class="col-sm-6">
-        <div class="pull-right">
+-->
+    <div class="col-8 mx-auto">
+        <div >
             <nav aria-label="Page navigation">
-                <ul class="pagination">
+                <ul class="pagination  mx-auto col-4">
                     <li class="page-item" >
-                        <a class="page-link" (click)="onFirstClicked()" aria-label="First" *ngIf="isFirstPageVisible()">
+                        <a class="page-link" (click)="onFirstClicked()" aria-label="First"> <!--*ngIf="isFirstPageVisible()" -->
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <li class="page-item" *ngFor="let item of getPages()" [class.active]="item === getCurrentPage() + 1"><a
                            class="page-link"  (click)="pageClicked(item)">{{item}}</a></li>
                     <li class="page-item" >
-                        <a class="page-link" (click)="onLastClicked()" aria-label="Last" *ngIf="isLastPageVisible()">
+                        <a class="page-link" (click)="onLastClicked()" aria-label="Last" > <!--*ngIf="isLastPageVisible()"-->
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                 </ul>
             </nav>
         </div>
+    </div>
+    <div class="col-2">
+        <button class="float-right btn btn-secondary" type="button" routerLink="/write" >글쓰기</button>
+        <router-outlet></router-outlet>
     </div>
 </div>
 `,

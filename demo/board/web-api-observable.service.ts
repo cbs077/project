@@ -16,8 +16,6 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 
-import { SearchMovieModel } from './search-movie.model';
-
 @Injectable()
 export class WebApiObservableService {
 //    headers: Headers;
@@ -25,7 +23,6 @@ export class WebApiObservableService {
 //    options: RequestOptions;
     options: any;
     
-    searchMovieModel: SearchMovieModel;
     constructor(private http: HttpClient     ){
     //
         this.headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Accept': 'q=0.8;application/json;q=0.9' });

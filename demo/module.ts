@@ -12,6 +12,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {NgxIqTableModule} from './component-wrapper/src/app/ngx-iq-table.module';
 import {TableComponent} from './component-wrapper/src/app/table/table.component';
 import {MockDataService} from './mock-data.service';
+//import {FooterComponent} from './component-wrapper/src/app/footer/footer.component';
 //import {AppRoutingModule} from './app-routing.module';
 import {MainComponent} from './board/main.component';
 import {WriteComponent} from './board/write.component';
@@ -43,6 +44,7 @@ import { HomeComponent } from './loginpage/home/index';
 import { LoginComponent } from './loginpage/login/index';
 import { RegisterComponent } from './loginpage/register/index';
 
+
 @NgModule({
   declarations: [
     AppComponent,    
@@ -52,7 +54,8 @@ import { RegisterComponent } from './loginpage/register/index';
     AlertComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent    
+    RegisterComponent
+ //   FooterComponent    
   ],
   imports: [
      BrowserModule,

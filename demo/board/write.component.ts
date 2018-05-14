@@ -16,14 +16,24 @@ import { environment } from '../environment';
 //  templateUrl: './test.component.html',
     template:`
          <div class="mx-auto" style="width:80% ; margin-top:30px; margin-left:auto; margin-right:auto;">
-         
+<!--         
          <ul>    
-            <li><span style="width:30%">분류</span>
-            <input [(ngModel)]="category"  class="form-control col-3"></li>
+            <span style="width:30%">분류
+            <input [(ngModel)]="category"  class="form-control col-3"></span>
         
-            <li><span style="width:30%">제목</span>   
-            <input [(ngModel)]="title"  class="form-control col-9"></li>
+            <span style="width:30%">제목</span>   
+            <input [(ngModel)]="title"  class="form-control col-9">
          </ul>
+-->
+        <div class="form-group">
+          <label for="category">분류:</label>
+          <input [(ngModel)]="category"  class="form-control" >
+        </div>
+        <div class="form-group">
+          <label for="title">제목:</label>
+          <input [(ngModel)]="title" class="form-control" >
+        </div>
+
          <ckeditor
                   [(ngModel)]="ckeditorContent">
                     <ckbutton [name]="'saveButton'"
@@ -60,7 +70,7 @@ export class WriteComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.dataSource = (rpd => this.mockDataService.listPersons(rpd.from, rpd.count, rpd.orderBy));
+        this.dataSource = (rpd => this.mockDataService.listboard(rpd.from, rpd.count, rpd.orderBy));
         const currentPage = this.activatedRoute.snapshot.queryParams['currentPage'];
 
         if (currentPage) {
@@ -76,7 +86,7 @@ export class WriteComponent implements OnInit {
 
      console.log( "contents" , contents );
      this.movieObservableService
-            .createService( environment.IP + ':8080/api/books', this.contents )
+            .createService( environment.IP + ':8080/api/board', this.contents )
             .subscribe(
                 result => console.log("5. createService: " , result)
     //            error => this.errorMessage = <any>error
