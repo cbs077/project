@@ -11,7 +11,7 @@ export class AuthenticationService {
     constructor(
         private http: HttpClient,
         private router: Router,
-        private movieObservableService: WebApiObservableService
+        private userObservableService: WebApiObservableService
     ) { }
   
     @Output() open: EventEmitter<any> = new EventEmitter();
@@ -19,7 +19,7 @@ export class AuthenticationService {
     login(username: string, password: string, returnuri: string) {
        console.log("login1", username);
        
-       return this.movieObservableService
+       return this.userObservableService
             .createService('http://121.157.55.240:8080/api/authen3',  {"username": username, "password": password } ) ;      
             /*.subscribe(
                     result => {

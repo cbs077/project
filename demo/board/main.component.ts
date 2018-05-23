@@ -155,9 +155,7 @@ export class MainComponent implements OnInit {
         } 
     ];
     curcontents : any ;
-    
-
-    
+   
     constructor(private mockDataService: MockDataService,
                 private tableComponent: TableComponent,
                 private activatedRoute: ActivatedRoute,
@@ -190,8 +188,7 @@ export class MainComponent implements OnInit {
         if( this.board ){
                const id = +this.activatedRoute.snapshot.paramMap.get('id') ; 
                console.log( "id", id ,this.board[id].contents );
-               this.dashboard.setcontents( this.board[id].contents );
-              
+               this.dashboard.setcontents( this.board[id].contents );              
         }
 */        
     }
@@ -220,14 +217,15 @@ export class MainComponent implements OnInit {
                             console.log("get data", this.board );  
            })
     }
-    get1(): void {
+ /*   get1(): void {
  //      this.tableComponent.refreshData();
        this.table.onPageClicked(0) ;
     }
+*/    
     setUsername(){
  //        var username =  JSON.parse(localStorage.getItem("currentUser")) ;                       });    
  //        this.username = username['uesrname'];
-         this.username = "asas";
+ //        this.username = "asas";
 //         console.log ( "asdaa" );
     }
     

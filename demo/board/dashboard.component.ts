@@ -1,7 +1,10 @@
 import { Component, OnInit, Input, OnChanges, AfterViewChecked, SimpleChange,
  ViewChild, AfterViewInit, } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {Person} from '../mock-data.service';
+//import {Person} from '../mock-data.service';
+import { MockDataService} from '../mock-data.service';
+import { WebApiObservableService } from './web-api-observable.service';
+import { environment } from '../environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,7 +25,7 @@ import {Person} from '../mock-data.service';
            </table>
            <div class="float-right" *ngIf="detail_exists === true">
                 <button type="button" class="btn btn-primary">수정</button>
-                <button type="button" class="btn btn-primary">삭제</button>
+                <button type="button" class="btn btn-primary" (click)="deleteContent($event)">삭제</button>
            </div>
               
    <!--      <button type="button" class="btn btn-info">1</button>
@@ -37,12 +40,15 @@ export class DashboardComponent implements OnInit, OnChanges {
   constructor(
 //    private renderer:Renderer
   //  private route: ActivatedRoute,
+      private mockDataService: MockDataService,
+      private boardObservableService: WebApiObservableService
   ) { }
 
   test : number ;
   myHtml : any;
   username : string;
   detail_exists = false ;
+  _id : number;
     
   @Input() curcontents : any ;
   prenpendHtml: string = '<div><b>this prepended html</b></div>';
@@ -63,10 +69,19 @@ export class DashboardComponent implements OnInit, OnChanges {
   ngAfterViewInit() {
     console.log('AfterViewInit');
   }*/
-  setcontents(test): void {
+  setcontents( val ): void {
       this.detail_exists = true;
-      this.myHtml = this.curcontents[test].contents;
-      this.username = this.curcontents[test].username ;
-      
+      this.myHtml = this.curcontents[val].contents;
+      this.username = this.curcontents[val].username ;
+      this._id = this.curcontents[val]._id ;        
   }
+  deleteContent(){  
+      this.boardObservableService
+            .deleteService( environment.IP + ":8080/api/board/"+ this._id  )
+            .subscribe(
+                result => console.log("deleteService: " , result)
+    //            error => this.errorMessage = <any>error
+     ); 
+  }
+    
 }

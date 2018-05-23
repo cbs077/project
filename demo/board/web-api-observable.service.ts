@@ -85,6 +85,20 @@ export class WebApiObservableService {
  //           .map(this.extractData)
             .catch(this.handleError);
     }
+    deleteService(url: string ): Observable<any> {
+/*        let params: URLSearchParams = new URLSearchParams();
+        for (var key in param) {
+            if (param.hasOwnProperty(key)) {
+                let val = param[key];
+                params.set(key, val);
+            }
+        }
+        this.options = new RequestOptions({ headers: this.headers, search: params });
+*/        return this.http
+            .delete(url, this.options )
+//            .map(this.extractData)
+            .catch(this.handleError);
+    }
 /*
     updateService(url: string, param: any): Observable<any> {
         let body = JSON.stringify(param);
