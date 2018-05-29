@@ -1,4 +1,4 @@
-import { NgModule, ApplicationRef } from '@angular/core';
+import { NgModule, ApplicationRef, ModuleWithProviders } from '@angular/core';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -44,7 +44,25 @@ import { HomeComponent } from './loginpage/home/index';
 import { LoginComponent } from './loginpage/login/index';
 import { RegisterComponent } from './loginpage/register/index';
 
+import { ChatComponent } from './chat/chat.component';
+import { MqttService }           from './chat/mqtt.service';
+import { IMqttServiceOptions }   from './chat/mqtt.model';
+import { MqttModule }           from './chat/mqtt.module';
 
+//export * from './chat/mqtt.service';
+//export * from './chat/mqtt.model';
+
+export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
+  connectOnCreate: true,
+  hostname: 'localhost',
+  port: 1884,
+  path: ''
+};
+/*
+export function mqttServiceFactory() {
+  return new MqttService(MQTT_SERVICE_OPTIONS);
+}
+*/
 @NgModule({
   declarations: [
     AppComponent,    
@@ -54,11 +72,13 @@ import { RegisterComponent } from './loginpage/register/index';
     AlertComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ChatComponent
  //   FooterComponent    
   ],
   imports: [
      BrowserModule,
+ //  LoginComponent,
      NgbModule.forRoot(),
      HttpClientModule,
      CKEditorModule,
@@ -73,8 +93,11 @@ import { RegisterComponent } from './loginpage/register/index';
           { path: 'dashboard/:id', component: MainComponent },
           { path: '', component: HomeComponent, canActivate: [AuthGuard] },
           { path: 'login', component: LoginComponent },
+          { path: 'chat', component: ChatComponent }, 
           { path: 'register', component: RegisterComponent },
     ],{useHash: true} ),
+    MqttModule.forRoot(),
+
      
  //  TypeaheadModule.forRoot(),
      FormsModule ],
@@ -98,6 +121,19 @@ import { RegisterComponent } from './loginpage/register/index';
   bootstrap: [AppComponent]
 //  bootstrap: [AppComponent]
 })
+/*    
+export class MqttModule {
+  static forRoot(providedService: any = {
+    provide: MqttService,
+    useFactory: mqttServiceFactory
+  }): ModuleWithProviders {
+    return {
+      ngModule: MqttModule,
+      providers: [providedService]
+    };
+  }
+} 
+*/   
 export class AppModule { 
     
 }

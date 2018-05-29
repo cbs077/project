@@ -147,9 +147,10 @@
     "install": "^0.10.4",
     "mongoose": "^5.0.4",
     "mongoose-auto-increment": "^5.0.1",
+    "mosca": "^2.8.1",
     "ng2-ckeditor": "^1.1.14",
     "ngx-bootstrap": "^2.0.2",
-    "npm": "^5.6.0",
-    "sudo": "^1.0.3"
+    "mqtt": "2.15.1",
+    "npm": "^5.6.0"   
   }
 }

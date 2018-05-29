@@ -36,12 +36,14 @@ export class LoginComponent implements OnInit {
     loading = false;
     returnUrl: string;
     
-    
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
-        private alertService: AlertService) { }
+        private alertService: AlertService
+//,     private mainService: MainComponent
+        
+        ) { }
 
     ngOnInit() {
         // reset login status
@@ -56,10 +58,9 @@ export class LoginComponent implements OnInit {
         this.authenticationService.login(this.model.username, this.model.password, this.returnUrl)
         .subscribe(
                     result => {
-                          console.log("5. createService: " , result);
+                          console.log("login: " , result);
                           localStorage.setItem('currentUser', JSON.stringify(result));
-//                        this.open.emit(null);
-
+//                        this.open.emit(null);                         
                           this.router.navigate([ this.returnUrl]);
                     },
                     error => {

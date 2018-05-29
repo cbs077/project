@@ -26,19 +26,16 @@ declare var $ :any;
     template:` 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <!-- Brand -->
-  <a class="navbar-brand" href="#">KnowHow</a>
+  <a class="navbar-brand" href="#" >KnowHow</a>
 
   <!-- Links -->
-  <ul class="navbar-nav ml-auto">
-    <li class="nav-item">
-      <a class="nav-link" href="#">로그아웃</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/login" >로그인</a>
-    </li>
-
-    
+  <ul class="navbar-nav ml-auto" >
   </ul>
+  <div >
+  <a [hidden]="loginshow === true" id="login" class="nav-link" routerLink="/chat"  >채팅</a>
+  <a [hidden]="loginshow === false" id="login" class="nav-link" routerLink="/login"  >로그인</a>
+  
+  </div>  
   <ul class="navbar-nav">
     <!-- Dropdown -->
     <li class="nav-item dropdown mr-auto">
@@ -136,6 +133,8 @@ export class MainComponent implements OnInit {
     username:string ;
     dataSource: (requestPageData: PageRequestData) => Observable<TableResultsPage>;
     
+    public loginshow:boolean = true;
+
     columns: TableColumn[] = [
         {
             name: '번호',
@@ -163,9 +162,10 @@ export class MainComponent implements OnInit {
                 private _http: HttpClient) 
     {  
          var username =  JSON.parse(localStorage.getItem("currentUser")) ;
-         if( username != null ) this.username = username['username'];
-         console.log("constructor" );  
-        
+         if( username != null ){
+              this.username = username['username'];
+              this.loginshow = false ;  
+         }
     //    console.log( "username", username , username['username'] );
     //    this.getdata();        
     }
@@ -192,10 +192,7 @@ export class MainComponent implements OnInit {
         }
 */        
     }
-/*    getdata1() {
-      
-    }
- */                                       
+                                      
     logout(){
        this.authenticationService.logout();
     }
@@ -205,8 +202,7 @@ export class MainComponent implements OnInit {
     //      console.log("getdata", this.dataSource);
             if (currentPage) {
                 this.table.currentPage = Number(currentPage);
-            }    
-        
+            }            
             this._http.get( environment.IP + ':8080/api/board')
  //                   .map((res: Response) => res.json())
                     .subscribe(data => {                            
@@ -216,17 +212,8 @@ export class MainComponent implements OnInit {
                             this.curcontents = this.board ;
                             console.log("get data", this.board );  
            })
-    }
- /*   get1(): void {
- //      this.tableComponent.refreshData();
-       this.table.onPageClicked(0) ;
-    }
-*/    
-    setUsername(){
- //        var username =  JSON.parse(localStorage.getItem("currentUser")) ;                       });    
- //        this.username = username['uesrname'];
- //        this.username = "asas";
-//         console.log ( "asdaa" );
-    }
-    
+    } 
+    checklogin(){
+       this.loginshow = false ;
+    }    
 }

@@ -19,6 +19,7 @@ export class AuthenticationService {
     login(username: string, password: string, returnuri: string) {
        console.log("login1", username);
        
+       // createService -> checkID
        return this.userObservableService
             .createService('http://121.157.55.240:8080/api/authen3',  {"username": username, "password": password } ) ;      
             /*.subscribe(
