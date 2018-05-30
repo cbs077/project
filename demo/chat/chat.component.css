@@ -73,7 +73,7 @@ small, .small {
 }
 
 .chat-message {
-  padding: 60px 20px 115px;
+  padding: 30px 20px 75px;
 }
 
 .chat {
@@ -191,4 +191,10 @@ img {
 a:hover, a:active, a:focus {
   text-decoration: none;
   outline: 0;
+}
+.pull-left{
+  float : left;
+}
+.pull-right{
+  float : right;		
 }
