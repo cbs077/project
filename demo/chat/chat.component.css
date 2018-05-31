@@ -8,7 +8,8 @@
 }
 
 .bg-white {
-  background-color: #fff;
+#  background-color: #fff;
+  background-color: #f9f9f9 !important;
 }
 
 .friend-list {
@@ -73,7 +74,7 @@ small, .small {
 }
 
 .chat-message {
-  padding: 30px 20px 75px;
+  padding: 30px 20px 30px;
 }
 
 .chat {
@@ -172,7 +173,7 @@ img {
 
 .chat-box {
   position: fixed;
-  bottom: 0;
+  bottom: 30;
   left: 444px;
   right: 0;
   padding: 15px;

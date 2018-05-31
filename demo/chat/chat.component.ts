@@ -68,7 +68,7 @@ import { IMqttServiceOptions }           from './mqtt.model';
             
             <!--=========================================================-->
             <!-- selected chat -->
-            <div class="col-md-8 bg-white" style="height: 405px; overflow:scroll; height:xyz;" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+            <div class="col-md-8 bg-white" style="height: 405px; overflow-x:hidden; overflow-y:scroll; height:xyz;" #scrollMe [scrollTop]="scrollMe.scrollHeight">
                 <div class="chat-message" >
                     <ul class="chat"  *ngFor="let text of texts" #chatext><!-- #chatext -->
                         <li class="left clearfix" >
@@ -101,15 +101,16 @@ import { IMqttServiceOptions }           from './mqtt.model';
                         </li> -->                 
                     </ul>
                 </div>
-                <div class="chat-box bg-white">
+                         
+            </div>        
+             <div class="chat-box bg-white">
                     <div class="input-group">
                         <input #textInput class="form-control border no-shadow no-rounded" placeholder="Type your message here">
                         <span class="input-group-btn">
                             <button class="btn btn-success no-rounded" type="button" (click)="unsafePublish('my/topic', textInput.value)">Send</button>
                         </span>
                     </div><!-- /input-group --> 
-                </div>            
-            </div>        
+                </div>    
         </div>
     </div>
       `
