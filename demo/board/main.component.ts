@@ -10,7 +10,9 @@ import {ActivatedRoute} from '@angular/router';
 import {TableComponent} from '../component-wrapper/src/app/table/table.component';
 //import {Http} from '@angular/http';
 
-import { HttpClient } from "@angular/common/http"; 
+import { HttpClient, HttpHeaders } from "@angular/common/http"; 
+import { Headers, RequestOptions} from '@angular/http';
+
 //import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './dashboard.component';
 import { AuthenticationService } from '../loginpage/_services/index';
@@ -154,16 +156,18 @@ export class MainComponent implements OnInit {
         } 
     ];
     curcontents : any ;
-   
+    token : any ;
     constructor(private mockDataService: MockDataService,
                 private tableComponent: TableComponent,
                 private activatedRoute: ActivatedRoute,
                 private authenticationService: AuthenticationService,
-                private _http: HttpClient) 
+                private _http: HttpClient
+                ) 
     {  
          var username =  JSON.parse(localStorage.getItem("currentUser")) ;
          if( username != null ){
               this.username = username['username'];
+              this.token = username['token'];
               this.loginshow = false ;  
          }
     //    console.log( "username", username , username['username'] );
@@ -202,7 +206,11 @@ export class MainComponent implements OnInit {
     //      console.log("getdata", this.dataSource);
             if (currentPage) {
                 this.table.currentPage = Number(currentPage);
-            }            
+            }      
+            console.log( "token", this.token );   
+ //         let headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
+ //         let options = new RequestOptions({ headers: headers });
+ 
             this._http.get( environment.IP + ':8080/api/board')
  //                   .map((res: Response) => res.json())
                     .subscribe(data => {                            

@@ -8,6 +8,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 @Injectable()
 export class AuthenticationService {
+    public token: string;
+
     constructor(
         private http: HttpClient,
         private router: Router,
@@ -21,7 +23,7 @@ export class AuthenticationService {
        
        // createService -> checkID
        return this.userObservableService
-            .createService('http://121.157.55.240:8080/api/authen3',  {"username": username, "password": password } ) ;      
+            .createService('http://121.157.55.240:8080/user/authen',  {"username": username, "password": password } ) ;      
             /*.subscribe(
                     result => {
                           console.log("5. createService: " , result);

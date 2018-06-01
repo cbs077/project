@@ -49,6 +49,9 @@ import { MqttService }           from './chat/mqtt.service';
 import { IMqttServiceOptions }   from './chat/mqtt.model';
 import { MqttModule }           from './chat/mqtt.module';
 
+//import { HTTP_INTERCEPTORS } from '@angular/common/http';
+//import { TokenInterceptor } from './../auth/token.interceptor';
+import { NoopInterceptor } from './loginpage/_guards/auth';
 //export * from './chat/mqtt.service';
 //export * from './chat/mqtt.model';
 
@@ -114,7 +117,8 @@ export function mqttServiceFactory() {
                     provide: HTTP_INTERCEPTORS,
                     useClass: JwtInterceptor,
                     multi: true
-                },       
+                },
+                      
                 // provider used to create fake backend
                 fakeBackendProvider
         ],

@@ -58,9 +58,16 @@ export class LoginComponent implements OnInit {
         this.authenticationService.login(this.model.username, this.model.password, this.returnUrl)
         .subscribe(
                     result => {
-                          console.log("login: " , result);
+ //                         var temp ;
+                          var temp = JSON.stringify(result) ;
+ //                         temp.push({"name":"2"});
+//                          console.log("login: " , result );
+                          result.username = this.model.username ;
+                          console.log("login1: " , result);
                           localStorage.setItem('currentUser', JSON.stringify(result));
-//                        this.open.emit(null);                         
+ //                         console.log( "token:", result.json().token);
+ //                         this.authenticationService.token = result.json().token ;
+                          //                        this.open.emit(null);                         
                           this.router.navigate([ this.returnUrl]);
                     },
                     error => {
