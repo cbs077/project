@@ -207,7 +207,7 @@ export class MainComponent implements OnInit {
             if (currentPage) {
                 this.table.currentPage = Number(currentPage);
             }      
-            console.log( "token", this.token );   
+            console.log( "token:", this.token );   
  //         let headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
  //         let options = new RequestOptions({ headers: headers });
  
@@ -218,7 +218,7 @@ export class MainComponent implements OnInit {
                             this.mockDataService.setdata(data);
                             this.table.onPageClicked(0) ;
                             this.curcontents = this.board ;
-                            console.log("get data", this.board );  
+                            console.log("get data:", this.board );  
            })
     } 
     checklogin(){

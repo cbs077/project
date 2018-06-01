@@ -22,14 +22,14 @@ import { IMqttServiceOptions }           from './mqtt.model';
         <div class="container bootstrap snippet">
 
         <div class="row">
-            <div class="col-md-4 bg-white" style="height: 40px;">
+            <!--<div class="col-md-4 bg-white" style="height: 40px;">
                 <div class=" row border-bottom padding-sm" style="height: 40px;">
                     Member
                 </div>
-                
+            -->     
                 <!-- =============================================================== -->
                 <!-- member list -->
-                <ul class="friend-list">
+           <!--     <ul class="friend-list">
                     <li class="active bounceInDown">
                         <a class="clearfix">
                             <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
@@ -65,10 +65,10 @@ import { IMqttServiceOptions }           from './mqtt.model';
                     </li>  
                 </ul>
             </div>
-            
+            -->
             <!--=========================================================-->
             <!-- selected chat -->
-            <div class="col-md-8 bg-white" style="height: 405px; overflow-x:hidden; overflow-y:scroll; height:xyz;" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+            <div class="col-md-8 bg-white mx-auto" style="height: 405px; overflow-x:hidden; overflow-y:scroll; height:xyz;" #scrollMe [scrollTop]="scrollMe.scrollHeight">
                 <div class="chat-message" >
                     <ul class="chat"  *ngFor="let text of texts" #chatext><!-- #chatext -->
                         <li class="left clearfix" >
@@ -77,7 +77,7 @@ import { IMqttServiceOptions }           from './mqtt.model';
                             </span>
                             <div class="chat-body clearfix " [attr.data-before]="name">
                                 <div class="header">
-                                    <strong class="primary-font">John Doe</strong>
+                                    <strong class="primary-font">{{text.user}}</strong>
                                     <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
                                 </div>
                                 <p>
@@ -103,15 +103,15 @@ import { IMqttServiceOptions }           from './mqtt.model';
                 </div>
                          
             </div>        
-             <div class="chat-box bg-white">
+            <div class="chat-box bg-white mx-auto">
                     <div class="input-group">
-                        <input #textInput class="form-control border no-shadow no-rounded" placeholder="Type your message here">
+                        <input [(ngModel)]="val" #textInput (keyup.enter)="onKey($event)" class="form-control border no-shadow no-rounded" placeholder="Type your message here">
                         <span class="input-group-btn">
                             <button class="btn btn-success no-rounded" type="button" (click)="unsafePublish('my/topic', textInput.value)">Send</button>
                         </span>
                     </div><!-- /input-group --> 
                 </div>    
-        </div>
+            </div>
     </div>
       `
     ,styleUrls: ['./chat.component.css']
@@ -122,37 +122,43 @@ import { IMqttServiceOptions }           from './mqtt.model';
     
     private subscription: Subscription;
     public message: string;
-//    private chatext: ElementRef;
+    public val :string ;
         
-    public texts: Text[] = [
+    public texts: Text[]= [
                               {
-                                  user: '번호',
-                                  text: 'author',  
+                                  user: '관리자',
+                                  text: '대화방에 참가 하였습니다.',  
                               } 
                           ];
     constructor(private _mqttService: MqttService,
                 private elementRef:ElementRef,
                 private renderer: Renderer2) {
       console.log("constructor");
-      this.subscription = this._mqttService.observe('my/topic').subscribe((message: IMqttMessage) => {
+      this.subscription = this._mqttService.observe('my/topic').subscribe((message: IMqttMessage) => { 
+          var tmp = message.payload.toString();
+          var jsonTmp = JSON.parse(tmp) ;
+     //       console.log("received1:",tmp, jsonTmp, jsonTmp['message'], jsonTmp['username'] );
+            
+          var newtext = 
+                           {
+                               user : jsonTmp['username'],
+                               text : jsonTmp['message'] ,  
+                           } 
+                       ;
+          this.texts.push( newtext );
+          this.scrollToBottom();
+          console.log( "texts", this.texts ) ;
         
-        this.message = message.payload.toString();
-        console.log("received:", this.message );  
-        
-        var newtext = 
-                       {
-                           user : "번호",
-                           text : this.message ,  
-                       } 
-                   ;
-        this.texts.push( newtext );
-        this.scrollToBottom();
-        console.log( "texts", this.texts ) ;
       });
+      var username =  JSON.parse(localStorage.getItem("currentUser")) ;
+      var participate = username['username']+"님이 채팅에 참가하였습니다." ;
+      this._mqttService.unsafePublish('my/topic', JSON.stringify({username: "관리자", message: participate}), {qos: 2, retain: true});  
     }
     
     public unsafePublish(topic: string, message: string): void {
-      this._mqttService.unsafePublish(topic, message, {qos: 1, retain: true});
+//      var tmp = { username:"bschoi1", message: "messsage1"} ;  
+      var username =  JSON.parse(localStorage.getItem("currentUser")) ;
+      this._mqttService.unsafePublish(topic, JSON.stringify({username: username['username'], message: message}), {qos: 2, retain: true});
       console.log("send", message);
  
     }
@@ -165,5 +171,9 @@ import { IMqttServiceOptions }           from './mqtt.model';
             this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
         } catch(err) { }                 
     }
-
+    onKey(event: any) { // without type info
+        console.log( "event:", event.target.value  );
+        this.unsafePublish( 'my/topic', event.target.value );
+        this.val = "" ;
+     }
   }
