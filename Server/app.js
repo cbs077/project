@@ -12,9 +12,7 @@ const router = require('express').Router()
 
 const jwt = require('jsonwebtoken');
 var config = require('./config.js');
-//const authMiddleware = require('./middleware/auth');
 const { isAuthenticated } = require('./middleware/auth');
-
 
 var autoIncrement = require('mongoose-auto-increment');
 
@@ -47,9 +45,6 @@ autoIncrement.initialize(connect);
 
 //mongoose.connect('mongodb://localhost/mongodb_tutorial');
 app.use(cors());
-// DEFINE MODEL
-//app.use(app.router);
-//routes.initialize(app);
 
 app.use(function(req, res, next) {
 //	 res.header("Access-Control-Allow-Origin", "http://121.157.55.240:9999");
@@ -82,10 +77,6 @@ var port = process.env.PORT || 8080;
 
 require('./routes/board.js')(app, Board);
 require('./routes/user.js')(app, User);
-//app.use('/user', isAuthenticated, require('./routes/auth.js'));
-//app.use('/api', isAuthenticated, require('./routes/board.js'));
-
-//app.use('/api', require('./routes/auth'));
 
 // [RUN SERVER]
 var server = app.listen(port, function(){

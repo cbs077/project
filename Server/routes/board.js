@@ -2,7 +2,7 @@ const { isAuthenticated } = require('../middleware/auth');
 
 module.exports = function(app, Board)
 {
-    // GET ALL BOOKS
+    // GET ALL board
     app.get('/api/board' , isAuthenticated,  function(req,res){
     	console.log("board");
     	Board.find(function(err, board){
@@ -12,7 +12,7 @@ module.exports = function(app, Board)
         })
     });
 
-    // GET SINGLE BOOK
+    // GET SINGLE board
     app.get('/api/board/:board_id', function(req, res){
         Board.findOne({_id: req.params.board_id}, function(err, board){
             if(err) return res.status(500).json({error: err});
@@ -21,7 +21,7 @@ module.exports = function(app, Board)
         })
     });
 
-    // GET BOOK BY AUTHOR
+    // GET board BY AUTHOR
     app.get('/api/board/author/:author', function(req, res){
         Board.find({author: req.params.author}, {_id: 0, title: 1, published_date: 1},  function(err, books){
             if(err) return res.status(500).json({error: err});
@@ -30,7 +30,7 @@ module.exports = function(app, Board)
         })
     });
 
-    // CREATE BOOK
+    // CREATE board
     app.post('/api/board', function(req, res){
         var board = new Board();
         console.log(req.body);
@@ -54,7 +54,7 @@ module.exports = function(app, Board)
         });
     });
 
-    // UPDATE THE BOOK
+    // UPDATE board
     app.put('/api/board/:board_id', function(req, res){
         Book.update({ _id: req.params.board_id }, { $set: req.body }, function(err, output){
             if(err) res.status(500).json({ error: 'database failure' });
@@ -80,7 +80,7 @@ module.exports = function(app, Board)
     */
     });
 
-    // DELETE BOOK
+    // DELETE board
     app.delete('/api/board/:board_id', function(req, res){
         Board.remove({ _id: req.params.board_id }, function(err, output){
         	console.log( "delete:", req.params.board_id );

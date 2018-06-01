@@ -56,26 +56,36 @@ export class LoginComponent implements OnInit {
     login() {
         this.loading = true;
         this.authenticationService.login(this.model.username, this.model.password, this.returnUrl)
+/*        .map(
+         (response) ⇒ response.json()
+        ).
+        subscribe(
+           (data) ⇒ {this.displaydata(data);}
+        )
+*/       
         .subscribe(
                     result => {
  //                         var temp ;
-                          var temp = JSON.stringify(result) ;
- //                         temp.push({"name":"2"});
-//                          console.log("login: " , result );
-                          result.username = this.model.username ;
-                          console.log("login1: " , result);
+                          var temp = JSON.stringify(result) ;                          result.username = this.model.username ;
+                          console.log("login12: " , result);
                           localStorage.setItem('currentUser', JSON.stringify(result));
- //                         console.log( "token:", result.json().token);
- //                         this.authenticationService.token = result.json().token ;
-                          //                        this.open.emit(null);                         
                           this.router.navigate([ this.returnUrl]);
                     },
+                    response  => {
+                        console.log( "response:", response );
+                        this.loading = false;
+                        alert( "아이디 및 패스워드를 확인해주세요." );
+                    },
                     error => {
-                          console.log("error", error);
+                          console.log("error:", error);
                           this.alertService.error(error);
                           this.loading = false;
                     }
-        ); 
+                    
+        )
+        
+  //      .map(this.extractData)
+  //      .catch(this.handleErrorObservable);; 
  
         
         /*            .subscribe(
@@ -89,4 +99,13 @@ export class LoginComponent implements OnInit {
                 });
   */      
     }
+  extractData(res: Response) {
+    let body = res.json();
+    return body || {};
+  }
+  handleErrorObservable (error: Response | any) {
+    console.error(error.message || error);
+    return Observable.throw(error.message || error);
+  } 
+
 }

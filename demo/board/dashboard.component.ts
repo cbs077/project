@@ -24,7 +24,7 @@ import { environment } from '../environment';
                 </tbody>
            </table>
            <div class="float-right" *ngIf="detail_exists === true">
-                <button type="button" class="btn btn-primary">수정</button>
+ <!--               <button type="button" class="btn btn-primary">수정</button>  -->
                 <button type="button" class="btn btn-primary" (click)="deleteContent($event)">삭제</button>
            </div>
               

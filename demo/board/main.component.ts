@@ -45,7 +45,7 @@ declare var $ :any;
         사용자
       </a>
       <div class="dropdown-menu" style="margin-left:-20px;min-width:7rem">
-        <a class="dropdown-item" href="#">회원정보</a>
+     <!--   <a class="dropdown-item" href="#">회원정보</a>  -->
         <a class="dropdown-item" href=""(click)="logout()" >로그아웃</a>
       </div>
     </li>

@@ -34,16 +34,6 @@ export class AuthenticationService {
                     }
               );
            */
-                
-             /*       data => {
-                        this.router.navigate([returnuri]);
-                    },
-  
-                    error => {
-                        this.alertService.error(error);
-                        this.loading = false;
-                    });*/
-                //            error => this.errorMessage = <any>error
                
  /*          
             map(user => {
@@ -57,11 +47,8 @@ export class AuthenticationService {
                 return "aa";
             }); 
             return "aa";*/
-     }
-    
-           
-
-             
+     }  
+          
   /*      return this.http.post<any>('http://121.157.55.240:8080/api/authen', { username: username, password: password })
             .map(user => {
                 // login successful if there's a jwt token in the response

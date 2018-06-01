@@ -59,6 +59,7 @@ export class RegisterComponent {
                 },
                 error => {
                     console.log("error");
+                    alert(" 중복된 사용자가 있습니다.");
                     this.alertService.error(error);
                     this.loading = false;
                 });
