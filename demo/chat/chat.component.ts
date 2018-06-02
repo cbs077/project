@@ -103,7 +103,7 @@ import { IMqttServiceOptions }           from './mqtt.model';
                 </div>
                          
             </div>        
-            <div class="chat-box bg-white mx-auto">
+            <div class="col-md-8 bg-white mx-auto"><!--  chat-box -->
                     <div class="input-group">
                         <input [(ngModel)]="val" #textInput (keyup.enter)="onKey($event)" class="form-control border no-shadow no-rounded" placeholder="Type your message here">
                         <span class="input-group-btn">
