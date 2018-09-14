@@ -77,7 +77,7 @@ export class DashboardComponent implements OnInit, OnChanges {
   }
   deleteContent(){  
       this.boardObservableService
-            .deleteService( environment.IP + ":8080/api/board/"+ this._id  )
+            .deleteService( environment.IP + "/api/board/"+ this._id  )
             .subscribe(
                 result => console.log("deleteService: " , result)
     //            error => this.errorMessage = <any>error

@@ -76,11 +76,11 @@ export class LoginComponent implements OnInit {
                         this.loading = false;
                         alert( "아이디 및 패스워드를 확인해주세요." );
                     },
-                    error => {
-                          console.log("error:", error);
-                          this.alertService.error(error);
-                          this.loading = false;
-                    }
+               //     error => {
+               //           console.log("error:", error);
+               //           this.alertService.error(error);
+               //           this.loading = false;
+                //    }
                     
         )
         

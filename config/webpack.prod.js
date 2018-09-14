@@ -35,10 +35,18 @@ module.exports = function(env) {
     plugins: [
       new webpack.optimize.ModuleConcatenationPlugin(),
       new CheckerPlugin(),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: ['polyfills'],
-        minChunks: Infinity
+      new webpack.DefinePlugin({
+    	  'process.env.NODE_ENV': JSON.stringify('5fa3b9'),
+
+      //    IS_PRODUCTION,
+      //    APP_VERSION,
+      //   IS_DEV,
+      //    HMR: options.HMR
       }),
+      //new webpack.optimize.CommonsChunkPlugin({
+      //  name: ['polyfills'],
+      //  minChunks: Infinity
+      //}),
       new HtmlWebpackPlugin({
         template: 'demo/index.ejs',
         chunksSortMode: 'dependency',
@@ -53,7 +61,14 @@ module.exports = function(env) {
         verbose: false,
         dry: false
       }),
-      new webpack.optimize.UglifyJsPlugin()
+      new webpack.optimize.UglifyJsPlugin(
+    		  { uglifyOptions: {
+    			    output: {
+    			      ascii_only: true,
+    			      beautify: false
+    			    }
+    			  }}
+      )
     ]
   });
 

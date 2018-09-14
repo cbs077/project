@@ -27,7 +27,7 @@ export class UserService {
 //          return this.http.post('http://121.157.55.240:8080/api/users', user);
      
         return this.movieObservableService
-                    .createService( environment.IP + ':8080/api/user', user );
+                    .createService( environment.IP + '/api/user', user );
                     
 
     }

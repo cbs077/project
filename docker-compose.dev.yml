@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+
+  app:
+    container_name: app_dev
+    image: app_dev
+    build:
+      context: .
+      dockerfile: .docker/nginx.dev.dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - app-network
+
+  node:
+    container_name: nodeapp
+    image: nodeapp
+    build:
+      context: ./Server
+      dockerfile: .docker/node.development.dockerfile
+    volumes:
+      - ./Server:/var/www/server 
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "3000:3000"
+    depends_on: 
+      - mongodb
+    networks:
+      - app-network
+      
+  #No authentication is provided here - JUST A DEMO! That would absolutely
+  #be needed for a "real" application
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    volumes:
+     - ./data:/data/db
+    networks:
+      - app-network
+
+  postgres:
+    container_name: 'postgres'
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+    networks:
+      - app-network
+
+  cadvisor:
+    container_name: cadvisor
+    image: google/cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+

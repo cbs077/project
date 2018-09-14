@@ -38,7 +38,7 @@ mongoose.connect( mongodbatla , function(err) {
     console.log('mongodb connected');
   });
 */  
-var connect = mongoose.connect('mongodb://172.17.0.2:27017/abc1');
+var connect = mongoose.connect('mongodb://mongodb/knowhow');
 
 //var connect = mongoose.connect(mongodbatla);	
 autoIncrement.initialize(connect);
@@ -71,7 +71,7 @@ app.use(express.static('public'));
 //
 // [CONFIGURE SERVER PORT]
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3000 ;
 
 // [CONFIGURE ROUTER]
 

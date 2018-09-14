@@ -1,5 +1,5 @@
 
 
-export class Config {
-    devIP:String = "http://121.157.55.240";
-}
+//export class Config {
+//    devIP:String = "http://localhost:3000";
+//}

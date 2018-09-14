@@ -186,7 +186,7 @@ export class MainComponent implements OnInit {
     ngOnInit(): void {            
           this.getdata();   
 //          this.getdata1(); 
-          
+          console.log("IS_PRODUCTION ", process.env.NODE_ENV )
           console.log( "this.curcontents" , this.curcontents ) ;
 /*
         if( this.board ){
@@ -211,7 +211,7 @@ export class MainComponent implements OnInit {
  //         let headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
  //         let options = new RequestOptions({ headers: headers });
  
-            this._http.get( environment.IP + ':8080/api/board')
+            this._http.get( environment.IP + '/api/board')
  //                   .map((res: Response) => res.json())
                     .subscribe(data => {                            
                             this.board = data ;

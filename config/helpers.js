@@ -1,6 +1,7 @@
 const path = require('path');
 
 const ENV = process.env.NODE_ENV;
+const SERVERIP = process.env.SERVERIP;
 const pkg = require('../package.json');
 const ROOT = path.resolve(__dirname, '..');
 
@@ -10,6 +11,7 @@ exports.dir = function(args) {
 }
 
 exports.ENV = JSON.stringify(ENV);
+exports.SERVERIP = SERVERIP ;
 exports.IS_PRODUCTION = ENV === 'production';
 exports.IS_PACKAGE = ENV === 'package';
 exports.IS_DEV = ENV === 'dev' || ENV === 'development';

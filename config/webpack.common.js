@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { ENV, IS_PRODUCTION, APP_VERSION, IS_DEV, dir } = require('./helpers');
+const { ENV, IS_PRODUCTION, APP_VERSION, IS_DEV, dir, SERVERIP } = require('./helpers');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = function(options = {}) {
@@ -11,7 +11,7 @@ module.exports = function(options = {}) {
       extensions: ['.ts', '.js', '.json', '.css', '.scss', '.html'],
       modules: [
         'node_modules',
-        dir('src'),
+     //   dir('src'),
         dir('demo')
       ]
     },
@@ -79,7 +79,10 @@ module.exports = function(options = {}) {
         APP_VERSION,
         IS_DEV,
         HMR: options.HMR
-      }),
+      }),/*
+      new webpack.optimize.CommonsChunkPlugin({
+          name: "vendor"
+      }),*/
       new CopyWebpackPlugin([
         { from: 'assets', to: 'assets' }
       ]),

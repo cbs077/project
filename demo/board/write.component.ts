@@ -86,7 +86,7 @@ export class WriteComponent implements OnInit {
 
      console.log( "contents" , contents );
      this.movieObservableService
-            .createService( environment.IP + ':8080/api/board', this.contents )
+            .createService( environment.IP + '/api/board', this.contents )
             .subscribe(
                 result => console.log("5. createService: " , result)
     //            error => this.errorMessage = <any>error

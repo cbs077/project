@@ -20,7 +20,8 @@ export class MockDataService {
         'author': 1,
         'title': 'Evelyn',
         'contents': 'Burns',
-        'category': 'eburns0@amazon.co.uk'
+        'category': 'eburns0@amazon.co.uk',
+        'published_date': '123'
     } ];
 
     constructor( private _http: HttpClient ) {
@@ -49,7 +50,7 @@ export class MockDataService {
                
     }
     private sortFunction(order) {
-        return (board1: board, board2: board) => {
+        return (board1: Board, board2: Board) => {
             if ('asc' === order.direction) {
                 if (board1[order.property] > board2[order.property]) {
                     return 1;

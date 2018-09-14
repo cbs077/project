@@ -11,9 +11,10 @@ module.exports = function(options) {
   return webpackMerge(commonConfig({ env: ENV }), {
     devtool: 'cheap-module-source-map',
     devServer: {
-      port: 9999,
+      port: 80,
  //     host: options.HMR,
-      host: "121.157.55.240",
+
+//      host: "218.147.65.173",
       stats: {
         colors: true,
         hash: true,
@@ -59,10 +60,10 @@ module.exports = function(options) {
     },
     plugins: [
       new CheckerPlugin(),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: ['polyfills'],
-        minChunks: Infinity
-      }),
+      //new webpack.optimize.CommonsChunkPlugin({
+      //  name: ['polyfills'],
+      //  minChunks: Infinity
+      //}),
       new HtmlWebpackPlugin({
         template: 'demo/index.ejs',
         chunksSortMode: 'dependency',
