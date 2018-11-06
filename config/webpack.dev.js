@@ -14,7 +14,7 @@ module.exports = function(options) {
       port: 80,
  //     host: options.HMR,
 
-//      host: "218.147.65.173",
+      host: "0.0.0.0",
       stats: {
         colors: true,
         hash: true,

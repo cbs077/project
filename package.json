@@ -90,6 +90,7 @@
     "clean-webpack-plugin": "^0.1.17",
     "copy-webpack-plugin": "^4.2.0",
     "core-js": "^2.5.1",
+    "cors": "^2.8.4",
     "cpx": "^1.5.0",
     "cross-env": "^5.1.1",
     "css-loader": "^0.28.7",

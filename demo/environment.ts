@@ -30,7 +30,8 @@ if(IS_PRODUCTION) {
 //    const IP = 'http://121.157.55.240'
 
 export const environment = {
-        IP : 'http://218.147.65.173:3000'
+//        IP : 'http://218.147.65.173:3000'
+      IP: window.location.origin + ':3000'
  //   IP :'http://121.157.55.240'
 
 };

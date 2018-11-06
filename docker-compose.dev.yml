@@ -1,7 +1,7 @@
 version: '3'
 services:
   myapp:
-    container_name: myapp
+    container_name: myapp1
     image: myapp_dev14
     build:
       context: .
@@ -10,8 +10,9 @@ services:
     volumes:
       - .:/ng-app      
     ports:
-      - "80:80"
+      - "8083:8083"
       - "443:443"
+      - "80:80"
 
     networks:
       - app-network

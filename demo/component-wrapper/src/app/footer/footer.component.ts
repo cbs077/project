@@ -8,7 +8,7 @@ const PAGES_LIMIT = 6;
 @Component({
     selector: 'ngx-iq-footer',
     template: `
-<div class="row" *ngIf="getTotalPages() > 0">
+<div class="row" *ngIf="getTotalPages() >= 0">
     <div class="col-2"></div>
 <!--<div class="col-sm-6 ">
         <div class="pull-left">

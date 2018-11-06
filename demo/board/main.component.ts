@@ -130,12 +130,6 @@ export class MainComponent implements OnInit {
 
     @ViewChild(TableComponent) table: TableComponent;    
     @ViewChild(DashboardComponent) dashboard: DashboardComponent;
-    
-    private board : any;
-    username:string ;
-    dataSource: (requestPageData: PageRequestData) => Observable<TableResultsPage>;
-    
-    public loginshow:boolean = true;
 
     columns: TableColumn[] = [
         {
@@ -157,6 +151,13 @@ export class MainComponent implements OnInit {
     ];
     curcontents : any ;
     token : any ;
+    
+    private board : any;
+    username:string ;
+    dataSource: (requestPageData: PageRequestData) => Observable<TableResultsPage>;
+    
+    public loginshow:boolean = true;
+
     constructor(private mockDataService: MockDataService,
                 private tableComponent: TableComponent,
                 private activatedRoute: ActivatedRoute,
@@ -183,8 +184,9 @@ export class MainComponent implements OnInit {
        const id = +this.activatedRoute.snapshot.paramMap.get('id') ;  
        this.dashboard.setcontents( data ); 
     }
-    ngOnInit(): void {            
-          this.getdata();   
+    ngOnInit(): void {     
+        console.log( 'this.username', this.username)
+           this.getdata();   
 //          this.getdata1(); 
           console.log("IS_PRODUCTION ", process.env.NODE_ENV )
           console.log( "this.curcontents" , this.curcontents ) ;
@@ -210,16 +212,18 @@ export class MainComponent implements OnInit {
             console.log( "token:", this.token );   
  //         let headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
  //         let options = new RequestOptions({ headers: headers });
- 
-            this._http.get( environment.IP + '/api/board')
- //                   .map((res: Response) => res.json())
-                    .subscribe(data => {                            
-                            this.board = data ;
-                            this.mockDataService.setdata(data);
-                            this.table.onPageClicked(0) ;
-                            this.curcontents = this.board ;
-                            console.log("get data:", this.board );  
-           })
+            
+            if( this.username != undefined ){ 
+                this._http.get( environment.IP + '/api/board')
+     //                   .map((res: Response) => res.json())
+                        .subscribe(data => {                            
+                                this.board = data ;
+                                this.mockDataService.setdata(data);
+                                this.table.onPageClicked(0) ;
+                                this.curcontents = this.board ;
+                                console.log("get data:", this.board );  
+               })
+            }
     } 
     checklogin(){
        this.loginshow = false ;
