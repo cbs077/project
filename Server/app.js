@@ -63,6 +63,8 @@ app.use(function(req, res, next) {
 var Board = require('./models/board');
 var User = require('./models/user');
 
+//router
+var category = require('./routes/admin');
 
 // [CONFIGURE APP TO USE bodyParser]
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -77,6 +79,9 @@ var port = process.env.PORT || 3000 ;
 
 require('./routes/board.js')(app, Board);
 require('./routes/user.js')(app, User);
+//require('./routes/admin.js')(app, Category);
+app.use('/admin', category);
+
 
 // [RUN SERVER]
 var server = app.listen(port, function(){

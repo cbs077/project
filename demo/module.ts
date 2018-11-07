@@ -17,6 +17,7 @@ import {MockDataService} from './mock-data.service';
 import {MainComponent} from './board/main.component';
 import {WriteComponent} from './board/write.component';
 import {DashboardComponent} from './board/dashboard.component';
+import {AdminComponent} from './admin/admin.component';
 
 //
 import { CKEditorModule } from 'ng2-ckeditor';
@@ -30,7 +31,7 @@ import { TypeaheadModule  } from 'ngx-bootstrap/typeahead';
 
 import {AppRoutingModule} from './app-routing.module'
 // -- test.ts
-import { WebApiObservableService } from './board/web-api-observable.service';
+import { WebApiObservableService } from './service/web-api-observable.service';
 
 // used to create fake backend
 import { fakeBackendProvider } from './loginpage/_helpers/index';
@@ -76,7 +77,8 @@ export function mqttServiceFactory() {
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    ChatComponent
+    ChatComponent,
+    AdminComponent
  //   FooterComponent    
   ],
   imports: [
@@ -98,6 +100,7 @@ export function mqttServiceFactory() {
           { path: 'login', component: LoginComponent },
           { path: 'chat', component: ChatComponent }, 
           { path: 'register', component: RegisterComponent },
+          { path: 'admin/category', component: AdminComponent },
     ],{useHash: true} ),
     MqttModule.forRoot(),
 

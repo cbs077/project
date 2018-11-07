@@ -1,5 +1,6 @@
 const { isAuthenticated } = require('../middleware/auth');
 
+//수정필요
 module.exports = function(app, Board)
 {
     // GET ALL board

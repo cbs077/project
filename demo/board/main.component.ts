@@ -1,31 +1,31 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {MockDataService} from '../mock-data.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { MockDataService } from '../mock-data.service';
 
 //import {Board} from '../mock-data.service';
-import {PageRequestData} from '../component-wrapper/src/app/page-request-data';
-import {TableResultsPage} from '../component-wrapper/src/app/table-results-page';
-import {TableColumn} from '../component-wrapper/src/app/table-column';
-import {ActivatedRoute} from '@angular/router';
-import {TableComponent} from '../component-wrapper/src/app/table/table.component';
+import { PageRequestData } from '../component-wrapper/src/app/page-request-data';
+import { TableResultsPage } from '../component-wrapper/src/app/table-results-page';
+import { TableColumn } from '../component-wrapper/src/app/table-column';
+import { ActivatedRoute } from '@angular/router';
+import { TableComponent } from '../component-wrapper/src/app/table/table.component';
 //import {Http} from '@angular/http';
 
-import { HttpClient, HttpHeaders } from "@angular/common/http"; 
-import { Headers, RequestOptions} from '@angular/http';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Headers, RequestOptions } from '@angular/http';
 
 //import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './dashboard.component';
 import { AuthenticationService } from '../loginpage/_services/index';
 import { environment } from '../environment';
 
-declare var jquery:any;
-declare var $ :any;
+declare var jquery: any;
+declare var $: any;
 
-@Component({
+@Component( {
     moduleId: module.id,
     selector: 'main-component',
-//  templateUrl: './test.component.html',
-    template:` 
+    //  templateUrl: './test.component.html',
+    template: ` 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <!-- Brand -->
   <a class="navbar-brand" href="#" >KnowHow</a>
@@ -125,11 +125,11 @@ declare var $ :any;
 `,
 
     styleUrls: ['./main.component.css']
-})
+} )
 export class MainComponent implements OnInit {
 
-    @ViewChild(TableComponent) table: TableComponent;    
-    @ViewChild(DashboardComponent) dashboard: DashboardComponent;
+    @ViewChild( TableComponent ) table: TableComponent;
+    @ViewChild( DashboardComponent ) dashboard: DashboardComponent;
 
     columns: TableColumn[] = [
         {
@@ -142,90 +142,88 @@ export class MainComponent implements OnInit {
             prop: 'category',
             width: 20,
             widthUnit: '%'
-        },{
+        }, {
             name: '제목',
             prop: 'title',
             width: 50,
             widthUnit: '%'
-        } 
+        }
     ];
-    curcontents : any ;
-    token : any ;
-    
-    private board : any;
-    username:string ;
-    dataSource: (requestPageData: PageRequestData) => Observable<TableResultsPage>;
-    
-    public loginshow:boolean = true;
+    curcontents: any;
+    token: any;
 
-    constructor(private mockDataService: MockDataService,
-                private tableComponent: TableComponent,
-                private activatedRoute: ActivatedRoute,
-                private authenticationService: AuthenticationService,
-                private _http: HttpClient
-                ) 
-    {  
-         var username =  JSON.parse(localStorage.getItem("currentUser")) ;
-         if( username != null ){
-              this.username = username['username'];
-              this.token = username['token'];
-              this.loginshow = false ;  
-         }
-    //    console.log( "username", username , username['username'] );
-    //    this.getdata();        
+    private board: any;
+    username: string;
+    dataSource: ( requestPageData: PageRequestData ) => Observable<TableResultsPage>;
+
+    public loginshow: boolean = true;
+
+    constructor( private mockDataService: MockDataService,
+        private tableComponent: TableComponent,
+        private activatedRoute: ActivatedRoute,
+        private authenticationService: AuthenticationService,
+        private _http: HttpClient
+    ) {
+        var username = JSON.parse( localStorage.getItem( "currentUser" ) );
+        if ( username != null ) {
+            this.username = username['username'];
+            this.token = username['token'];
+            this.loginshow = false;
+        }
+        //    console.log( "username", username , username['username'] );
+        //    this.getdata();        
     }
-    ngAfterViewChecked(){
-        if( this.board ){
-           const id = +this.activatedRoute.snapshot.paramMap.get('id') ; 
+    ngAfterViewChecked() {
+        if ( this.board ) {
+            const id = +this.activatedRoute.snapshot.paramMap.get( 'id' );
         }
     }
-    handleHeaderRowClick(data){
-//       this.detail_exists = true ;
-       const id = +this.activatedRoute.snapshot.paramMap.get('id') ;  
-       this.dashboard.setcontents( data ); 
+    handleHeaderRowClick( data ) {
+        //       this.detail_exists = true ;
+        const id = +this.activatedRoute.snapshot.paramMap.get( 'id' );
+        this.dashboard.setcontents( data );
     }
-    ngOnInit(): void {     
-        console.log( 'this.username', this.username)
-           this.getdata();   
-//          this.getdata1(); 
-          console.log("IS_PRODUCTION ", process.env.NODE_ENV )
-          console.log( "this.curcontents" , this.curcontents ) ;
-/*
-        if( this.board ){
-               const id = +this.activatedRoute.snapshot.paramMap.get('id') ; 
-               console.log( "id", id ,this.board[id].contents );
-               this.dashboard.setcontents( this.board[id].contents );              
+    ngOnInit(): void {
+        console.log( 'this.username', this.username )
+        this.getdata();
+        //          this.getdata1(); 
+        console.log( "IS_PRODUCTION ", process.env.NODE_ENV )
+        console.log( "this.curcontents", this.curcontents );
+        /*
+                if( this.board ){
+                       const id = +this.activatedRoute.snapshot.paramMap.get('id') ; 
+                       console.log( "id", id ,this.board[id].contents );
+                       this.dashboard.setcontents( this.board[id].contents );              
+                }
+        */
+    }
+
+    logout() {
+        this.authenticationService.logout();
+    }
+    getdata() {
+        this.dataSource = ( rpd => this.mockDataService.listboard( rpd.from, rpd.count, rpd.orderBy ) );
+        const currentPage = this.activatedRoute.snapshot.queryParams['currentPage'];
+        //      console.log("getdata", this.dataSource);
+        if ( currentPage ) {
+            this.table.currentPage = Number( currentPage );
         }
-*/        
+        console.log( "token:", this.token );
+        //         let headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
+        //         let options = new RequestOptions({ headers: headers });
+
+        if ( this.username != undefined ) {
+                this._http.get( environment.IP + '/api/board' )
+                .subscribe( data => {
+                    this.board = data;
+                    this.mockDataService.setdata( data );
+                    this.table.onPageClicked( 0 );
+                    this.curcontents = this.board;
+                    console.log( "get data:", this.board );
+                } )
+        }
     }
-                                      
-    logout(){
-       this.authenticationService.logout();
+    checklogin() {
+        this.loginshow = false;
     }
-    getdata(){           
-      this.dataSource = (rpd => this.mockDataService.listboard(rpd.from, rpd.count, rpd.orderBy ));        
-            const currentPage = this.activatedRoute.snapshot.queryParams['currentPage'];
-    //      console.log("getdata", this.dataSource);
-            if (currentPage) {
-                this.table.currentPage = Number(currentPage);
-            }      
-            console.log( "token:", this.token );   
- //         let headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
- //         let options = new RequestOptions({ headers: headers });
-            
-            if( this.username != undefined ){ 
-                this._http.get( environment.IP + '/api/board')
-     //                   .map((res: Response) => res.json())
-                        .subscribe(data => {                            
-                                this.board = data ;
-                                this.mockDataService.setdata(data);
-                                this.table.onPageClicked(0) ;
-                                this.curcontents = this.board ;
-                                console.log("get data:", this.board );  
-               })
-            }
-    } 
-    checklogin(){
-       this.loginshow = false ;
-    }    
 }

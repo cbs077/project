@@ -8,7 +8,7 @@ import {ActivatedRoute} from '@angular/router';
 import {TableComponent} from '../component-wrapper/src/app/table/table.component';
 
 import { SearchMovieModel } from './search-movie.model';
-import { WebApiObservableService } from './web-api-observable.service';
+import { WebApiObservableService } from '../service/web-api-observable.service';
 import { environment } from '../environment';
 
 @Component({

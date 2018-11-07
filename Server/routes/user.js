@@ -2,6 +2,7 @@ const { createToken } = require('../lib/token');
 const { isAuthenticated } = require('../middleware/auth');
 const authMiddleware = require('../middleware/auth');
 
+//수정필요
 module.exports = function(app, User)
 {
 

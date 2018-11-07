@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { User } from '../_models/index';
 import { Observable} from 'rxjs/Observable';
 
-import { WebApiObservableService } from '../../board/web-api-observable.service';
+import { WebApiObservableService } from '../../service/web-api-observable.service';
 import { environment } from '../../environment';
 
 @Injectable()

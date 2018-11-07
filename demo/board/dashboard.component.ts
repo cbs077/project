@@ -3,7 +3,7 @@ import { Component, OnInit, Input, OnChanges, AfterViewChecked, SimpleChange,
 import { ActivatedRoute } from '@angular/router';
 //import {Person} from '../mock-data.service';
 import { MockDataService} from '../mock-data.service';
-import { WebApiObservableService } from './web-api-observable.service';
+import { WebApiObservableService } from '../service/web-api-observable.service';
 import { environment } from '../environment';
 
 @Component({

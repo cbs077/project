@@ -2,7 +2,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
-import { WebApiObservableService } from '../../board/web-api-observable.service';
+import { WebApiObservableService } from '../../service/web-api-observable.service';
 import { environment } from '../../environment' ;
 import { Router, ActivatedRoute } from '@angular/router';
 
