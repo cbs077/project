@@ -11,10 +11,10 @@ import { environment } from '../environment';
   template: `  
            <table  *ngIf="detail_exists === true" class="table table-bordered mx-auto col-12" >
                 <thead>
-                  <tr>
-                    <td style="width: 20%">{{username}}</td>
-                    <td style="width: 40%">Lastname</td>
-                    <td style="width: 40%">Email</td>
+                  <tr>  <!--*ngFor="let item of curcontents" -->
+                    <td style="width: 10%">{{category}}</td>
+                    <td style="width: 80%">{{title}}</td> 
+                    <td style="width: 10%">{{username}}</td>                  
                   </tr>
                 </thead>
                 <tbody>
@@ -22,6 +22,19 @@ import { environment } from '../environment';
                      <td colspan="100%" [innerHTML]="myHtml"></td>                        
                   </tr>
                 </tbody>
+                <tfoot>
+                   <tr>
+                      <td></td>
+                      
+                      <td>
+                          <span>추천순위 : </span>
+                          <button type="button">1위</button>
+                          <button type="button">2위</button>
+                          <button type="button">3위</button>
+                      </td>
+                      <td></td>
+                   </tr>  
+                </tfoot>
            </table>
            <div class="float-right" *ngIf="detail_exists === true">
  <!--               <button type="button" class="btn btn-primary">수정</button>  -->
@@ -46,7 +59,9 @@ export class DashboardComponent implements OnInit, OnChanges {
 
   test : number ;
   myHtml : any;
+  title: string;
   username : string;
+  category: string;
   detail_exists = false ;
   _id : number;
     
@@ -54,6 +69,7 @@ export class DashboardComponent implements OnInit, OnChanges {
   prenpendHtml: string = '<div><b>this prepended html</b></div>';
     
   ngOnInit() {
+  //      headcontents = this.curcontents
   //    const id = +this.route.snapshot.paramMap.get('id') ;
   //    console.log( "dash", id , this.person );
   //    this.test = id ;
@@ -71,8 +87,11 @@ export class DashboardComponent implements OnInit, OnChanges {
   }*/
   setcontents( val ): void {
       this.detail_exists = true;
-      this.myHtml = this.curcontents[val].contents;
+      //this.curcontents = this.curcontents[val];
+      this.myHtml =  this.curcontents[val].contents;
       this.username = this.curcontents[val].username ;
+      this.title = this.curcontents[val].title ;
+      this.category = this.curcontents[val].category ;
       this._id = this.curcontents[val]._id ;        
   }
   deleteContent(){  

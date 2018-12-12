@@ -1,5 +1,23 @@
 const { isAuthenticated } = require('../middleware/auth');
 
+const Category = require('../models/board');
+const User = require('../models/user');
+
+router.post('/category', function(req, res){
+    var category = new Category();
+    category.category = req.body.category;
+ //   category.published_date = new Date(req.body.published_date);
+
+    category.save(function(err){
+        if(err){
+            console.error(err);
+            res.json({result: 0});
+            return;
+        }
+
+        res.json({result: 1});
+    });
+});
 //수정필요
 module.exports = function(app, Board)
 {
