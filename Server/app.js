@@ -60,12 +60,11 @@ app.use(function(req, res, next) {
 	 next();
 });
 
-var Board = require('./models/board');
+
 var User = require('./models/user');
-
-//router
-var category = require('./routes/admin');
-
+var Admin = require('./routes/admin');
+var Board = require('./routes/board');
+//var category = require('./routes/board');
 // [CONFIGURE APP TO USE bodyParser]
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -74,14 +73,13 @@ app.use(express.static('public'));
 // [CONFIGURE SERVER PORT]
 
 var port = process.env.PORT || 3000 ;
-
 // [CONFIGURE ROUTER]
 
-require('./routes/board.js')(app, Board);
+//require('./routes/board.js')(app, Board);
 require('./routes/user.js')(app, User);
 //require('./routes/admin.js')(app, Category);
-app.use('/admin', category);
-
+app.use('/admin', Admin);
+app.use('/api/board', Board);
 
 // [RUN SERVER]
 var server = app.listen(port, function(){

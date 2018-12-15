@@ -57,7 +57,7 @@ export class DashboardComponent implements OnInit, OnChanges {
       private boardObservableService: WebApiObservableService
   ) { }
 
-  test : number ;
+  test : number ; //
   myHtml : any;
   title: string;
   username : string;
