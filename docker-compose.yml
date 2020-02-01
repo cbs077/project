@@ -5,7 +5,7 @@ services:
     image: mongo:3.4.2
     
     volumes:
-      - ./data:/data/db
+      -/home/bschoi/mongodb:/data/db
     ports:
      - "27017:27017"
     environment:
