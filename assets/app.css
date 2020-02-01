@@ -301,3 +301,9 @@ select {
 	font-weight: bold;
 	background-color: #ffeb3b;
 }
+.table-bordered {
+	
+}
+ .thead{
+	background: lightslategray !important;
+} 

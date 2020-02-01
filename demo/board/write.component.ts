@@ -10,6 +10,7 @@ import {TableComponent} from '../component-wrapper/src/app/table/table.component
 import { SearchMovieModel } from './search-movie.model';
 import { WebApiObservableService } from '../service/web-api-observable.service';
 import { environment } from '../environment';
+import { HttpClient } from "@angular/common/http";
 
 @Component({
 //    selector: 'app-test-component',
@@ -26,12 +27,12 @@ import { environment } from '../environment';
          </ul>
 -->
         <div class="form-group">
-          <label for="category">분류:</label>
+          <label for="category">분류1:</label>
           <input [(ngModel)]="category"  class="form-control" >
         </div>
         <div class="form-group">
           <label for="title">제목:</label>
-          <input [(ngModel)]="title" class="form-control" >
+          <input [(ngModel)]="title" (ngModelChange)="valuechange($event)" class="form-control" >
         </div>
 
          <ckeditor
@@ -57,6 +58,7 @@ export class WriteComponent implements OnInit {
     category: string;
     title: string;
     ckeditorContent: string;
+    categorylist: any;
 
     @ViewChild(TableComponent) table: TableComponent;
     dataSource: (requestPageData: PageRequestData) => Observable<TableResultsPage>;
@@ -66,17 +68,40 @@ export class WriteComponent implements OnInit {
     
     constructor(private mockDataService: MockDataService,
                 private activatedRoute: ActivatedRoute,
-                private movieObservableService: WebApiObservableService) {
+                private movieObservableService: WebApiObservableService,
+                private _http: HttpClient ) {
     }
 
     ngOnInit(): void {
-        this.dataSource = (rpd => this.mockDataService.listboard(rpd.from, rpd.count, rpd.orderBy));
+        /*this.dataSource = (rpd => this.mockDataService.listboard(rpd.from, rpd.count, rpd.orderBy));
         const currentPage = this.activatedRoute.snapshot.queryParams['currentPage'];
 
         if (currentPage) {
             this.table.currentPage = Number(currentPage);
-        }
-    }
+        }*/
+        this._http.get( environment.IP + '/admin/category' )
+        .subscribe( data => {
+            console.log( "get data:", data );
+            this.categorylist = data ;
+        })
+   }
+
+	valuechange(newValue): void {
+	  //mymodel = newValue;
+	  console.log(newValue)
+	  this._http.get( environment.IP + '/api/service/translate?title='+ newValue )
+	        .subscribe( data => {
+	        //this.board = data;
+	        //this.mockDataService.setdata( data );
+	        //this.table.onPageClicked( 0 );
+	        //this.curcontents = this.board;
+	        console.log( "get data:", data );
+      },
+      err => {
+          console.log( 'error:', err.error.message)
+        
+      })
+	}
 
    save(): void {
      var contents = this.ckeditorContent ;
@@ -85,12 +110,13 @@ export class WriteComponent implements OnInit {
      this.contents = {"username": username["username"], "category": this.category , "title": this.title , "contents": contents};  
 
      console.log( "contents" , contents );
+     
      this.movieObservableService
-            .createService( environment.IP + '/api/board', this.contents )
-            .subscribe(
-                result => console.log("5. createService: " , result)
-    //            error => this.errorMessage = <any>error
-    );   
+     .createService( environment.IP + '/api/board', this.contents )
+     .subscribe(
+            result => console.log("5. createService: " , result)
+            error => this.errorMessage = <any>error
+  	 );   
   }
 
 }

@@ -99,15 +99,14 @@ export class WebApiObservableService {
 //            .map(this.extractData)
             .catch(this.handleError);
     }
-/*
     updateService(url: string, param: any): Observable<any> {
-        let body = JSON.stringify(param);
+        //let body = JSON.stringify(param);
         return this.http
-            .put(url, body, this.options)
+            .put(url, param, this.options)
 //            .map(this.extractData)
             .catch(this.handleError);
     }
-
+/*
     patchService(url: string, param: any): Observable<any> {
         let body = JSON.stringify(param);
         return this.http

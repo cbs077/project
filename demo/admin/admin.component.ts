@@ -11,29 +11,31 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
   selector: 'app-admin',
   template: `  
       <div class="input-group mx-auto col-10 mt-4">    
-      <input type="text"  [(ngModel)]="category" class="form-control" placeholder="카테고리 추가">
-      <span class="input-group-btn">
-        <button class="btn btn-secondary" type="button" (click)="add()" > 추가  </button>
-      </span>
-      <span class="col-1"></span>
-      </div>
-      <div>
-      <table class="table table-bordered mt-5">
-        <tbody>
-          <tr>
-            <td>John</td>
-            <td>Doe</td>
-            <td>john</td>
-          </tr>
-        </tbody>
-      </table> 
+          <input type="text"  [(ngModel)]="firstCategory" class="form-control" placeholder="1차 추가">         
+          <input type="text"  [(ngModel)]="secondCategory" class="form-control" placeholder="2차 추가">
+          <span class="input-group-btn">
+            <button class="btn btn-secondary" type="button" (click)="add()" > 추가  </button>
+          </span>
+          <span class="col-1"></span>
+          </div>
+          <div>
+          <table class="table table-bordered mt-5">
+            <tbody>
+                <tr *ngFor="let item of categorylist; let i=index" >
+                    <td> {{item.firstCategory}} </td>
+                    <td> {{item.secondCategory}} </td>
+                </tr>
+            </tbody>
+          </table> 
       </div>
         `,
 //    styleUrls: ['./dashboard.component.css']
 })
 export class AdminComponent implements OnInit, OnChanges {
   
-  category : string ;
+  firstCategory : string ;
+  secondCategory : string ;
+  categorylist : any ;
   contents: any;
 //  reqlist : 
   constructor(
@@ -45,6 +47,7 @@ export class AdminComponent implements OnInit, OnChanges {
       this._http.get( environment.IP + '/admin/category' )
       .subscribe( data => {
           console.log( "get data:", data );
+          this.categorylist = data ;
       })
   }
   
@@ -52,7 +55,7 @@ export class AdminComponent implements OnInit, OnChanges {
   
   }
   add(): void { 
-      this.contents = {  "category": this.category };  
+      this.contents = {  "firstCategory": this.firstCategory, "secondCategory": this.secondCategory  };  
 
       console.log( "contents" , this.contents );
       this.movieObservableService

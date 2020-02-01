@@ -89,6 +89,8 @@ declare var $: any;
         <button class="btn btn-secondary" type="button" routerLink="/write">Go!</button>
       </span>
       <span class="col-1"></span>
+      <button class="float-right btn btn-secondary" type="button" routerLink="/write" >글쓰기</button>
+      <router-outlet></router-outlet>
   </div>
   <!-- overview -->
   <div class="container col-10">
@@ -97,16 +99,16 @@ declare var $: any;
       <table class="table table-bordered mx-auto col-6 mt-4" >
         <thead>
             <tr>    
-                <td> 카테고리 </td>
-                <td> 제목 </td>
-                <td> 총점 </td>
+                <td style='width:20%'> 카테고리 </td>
+                <td style='width:60%'> 제목 </td>
+                <td style='width:20%'> 총점 </td>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let item of curcontents; let i=index" >
                 <td> {{item.category}} </td>
                 <td> <a routerLink="/dashboard/{{i}}" (click)="handleHeaderRowClick(i)">{{item.title}}</a> </td>
-                <td> 50 </td>
+                <td> {{item.totalScore}}  </td>
             </tr>
         </tbody>  
       </table> 
@@ -115,9 +117,9 @@ declare var $: any;
       <table  class="table table-bordered mx-auto col-6 mt-4" >
         <thead>
             <tr>    
-                <td> 카테고리 </td>
-                <td> 제목 </td>
-                <td> 총점 </td>
+                <td style='width:20%'> 카테고리 </td>
+                <td style='width:60%'> 제목 </td>
+                <td style='width:20%'> 총점 </td>
             </tr>
         </thead>
         <tbody>
@@ -131,10 +133,12 @@ declare var $: any;
   </div>
   </div>
   </div>
+  <div class="container mx-auto col-10">
+        <app-dashboard class="mx-auto col-8" [curcontents]="curcontents"></app-dashboard>
+  </div> 
   <!-- detail write -->      
+  <!--
     <div class="container mx-auto col-10">
-        <app-dashboard class="mx-auto col-8" [curcontents]="curcontents"></app-dashboard> 
-     
         <ngb-tabset class="border-primary">
             <ngb-tab title="종합">
             <ng-template ngbTabContent>    
@@ -155,14 +159,14 @@ declare var $: any;
                 <ng-template #rows let-item="$implicit" let-i="index">
                     <tr>
                         <td>{{item.id}}</td>
-                        <td>{{item.category}}</td> <!-- item.id -->
+                        <td>{{item.category}}</td> 
                         <td ><a routerLink="/dashboard/{{i}}" (click)="handleHeaderRowClick(i)">{{item.title}}</a></td>                   
-     <!--  <a [routerLink]="['/dashboard', item.title]" <td><a ng-href="#/write">{{item.title}}</a></td>-->         
                     </tr>
           </ng-template>
         </ngx-iq-table>
         <router-outlet></router-outlet>
     </div>
+     -->
 `,
 
     styleUrls: ['./main.component.css']
@@ -248,4 +252,36 @@ export class MainComponent implements OnInit {
         this.authenticationService.logout();
     }
     getdata() {
-        this.dataSource = ( rpd => this.mock
+        //this.dataSource = ( rpd => this.mockDataService.listboard( rpd.from, rpd.count, rpd.orderBy ) );
+        const currentPage = this.activatedRoute.snapshot.queryParams['currentPage'];
+        //      console.log("getdata", this.dataSource);
+        if ( currentPage ) {
+            this.table.currentPage = Number( currentPage );
+        }
+        console.log( "token:", this.token );
+        //         let headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
+        //         let options = new RequestOptions({ headers: headers });
+
+        if ( this.username != undefined ) {
+                this._http.get( environment.IP + '/api/board' )
+                    .subscribe( data => {
+                    this.board = data;
+                    this.mockDataService.setdata( data );
+                    //this.table.onPageClicked( 0 );
+                    this.curcontents = this.board;
+                    console.log( "get data:", this.board );
+                },
+                err => {
+                    if( err.error.message == "jwt expired"){
+                        //console.log( 'jwt exipreds')
+                        //this.authenticationService.logout();
+                    }
+                    console.log( 'error:', err.error.message)
+                    
+                })
+        }
+    }
+    checklogin() {
+        this.loginshow = false;
+    }
+}

@@ -1,6 +1,8 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'; 
 import { AppModule } from './module';
 import { decorateModuleRef } from './environment';
+
 
  document.addEventListener('DOMContentLoaded', () => {
    platformBrowserDynamic()

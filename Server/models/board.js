@@ -10,9 +10,9 @@ var boardSchema = new Schema({
     title: String,
     contents: String,
     totalScore: Number,
-    firstCount: Number,
-    secondCount: Number,
-    thirdCount: Number, 
+    firstRankCount: Number,
+    secondRankCount: Number,
+    thirdRankCount: Number, 
     published_date: { type: Date, default: Date.now  }
 });
 boardSchema.plugin( autoIncrement.plugin , { model : 'products' , field : 'id' , startAt : 1 });

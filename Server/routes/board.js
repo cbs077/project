@@ -4,19 +4,44 @@ const { isAuthenticated } = require('../middleware/auth');
 const Board = require('../models/board');
 const User = require('../models/user');
 
-router.post('/rank/:rank', function(req, res){
-    var board = new Board();
-    var rank =  req.params.rank 
+router.put('/rank/:board_id', function(req, res){
+    var rank =  Number(req.body.rank )
+    var board =  req.params.board
+    var rankCountquery = {}
+    var toltalCountquery = {}
+    var countQuery
+    switch( rank ){  
+        case 1 : 
+            //rankCountquery = {  }
+            //toltalCountquery = { }
+            countQuery = { firstRankCount : 1, totalScore : 3 }
+            /*Board.find(function(err, board){
+                if(err) return res.status(500).send({error: 'database failure'});
+                console.log(board);
+                res.json(board);
+            })*/
+        break
+        case 2 : 
+             countQuery = { firstRankCount : 2, totalScore : 2 }
+        //    rankCountquery = { secondRankCount : rank }
+        break 
+        default : 
+        break 
+    }
+    new Promise(function( resolve, rejected ){
+        return
+    })
+    .then( function(){
 
-    board.save(function(err){
-        if(err){
-            console.error(err);
-            res.json({result: 0});
-            return;
-        }
-
-        res.json({result: 1});
-    });
+    })
+    // 유저 1순위 글 추가
+    // 사용자수new
+    console.log( 'rankCountquery', rankCountquery)
+    Board.update({ _id: req.params.board_id }, { $inc:  countQuery }, function(err, output){
+        if(err) res.status(500).json({ error: 'database failure1' });
+        if(!output) return res.status(404).json({error: 'board not found'});
+        res.json( { message: 'board updated' } );
+    })
 });
 router.get('/' , isAuthenticated,  function(req,res){
     console.log("board");
@@ -29,7 +54,7 @@ router.get('/' , isAuthenticated,  function(req,res){
 });
 
 // GET SINGLE board
-router.get('/api/board/:board_id', function(req, res){
+router.get('/:board_id', function(req, res){
     var Board = new Board();
     Board.findOne({_id: req.params.board_id}, function(err, board){
         if(err) return res.status(500).json({error: err});
@@ -39,7 +64,7 @@ router.get('/api/board/:board_id', function(req, res){
 });
 
 // GET board BY AUTHOR
-router.get('/api/board/author/:author', function(req, res){
+router.get('/author/:author', function(req, res){
     var Board = new Board();
     Board.find({author: req.params.author}, {_id: 0, title: 1, published_date: 1},  function(err, books){
         if(err) return res.status(500).json({error: err});
@@ -49,7 +74,7 @@ router.get('/api/board/author/:author', function(req, res){
 });
 
 // CREATE board
-router.post('/api/board', function(req, res){
+router.post('/', function(req, res){
     var board = new Board();
     console.log(req.body);
     board.username = req.body.username;
@@ -71,7 +96,7 @@ router.post('/api/board', function(req, res){
 });
 
 // UPDATE board
-router.put('/api/board/:board_id', function(req, res){
+router.put('/:board_id', function(req, res){
     Book.update({ _id: req.params.board_id }, { $set: req.body }, function(err, output){
         if(err) res.status(500).json({ error: 'database failure' });
         console.log(output);
@@ -80,7 +105,7 @@ router.put('/api/board/:board_id', function(req, res){
     })
 });
 // DELETE board
-router.delete('/api/board/:board_id', function(req, res){
+router.delete('/:board_id', function(req, res){
 
     Board.remove({ _id: req.params.board_id }, function(err, output){
         console.log( "delete:", req.params.board_id );

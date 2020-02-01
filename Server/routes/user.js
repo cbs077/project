@@ -7,6 +7,7 @@ module.exports = function(app, User)
 {
 
 	app.get('/', function(req,res){
+		console.log('main')
 		res.send('Hello World12');
     });
 

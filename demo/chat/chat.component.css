@@ -199,3 +199,6 @@ a:hover, a:active, a:focus {
 .pull-right{
   float : right;		
 }
+.table-bordered thead{
+	    background: aliceblue;
+} 

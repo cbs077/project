@@ -5,7 +5,8 @@ var autoIncrement = require('mongoose-auto-increment');
 
 var categorySchema = new Schema({
 	id: Number,
-	category: String,
+	firstCategory: String,
+	secondCategory: String,
     published_date: { type: Date, default: Date.now  }
 });
 categorySchema.plugin( autoIncrement.plugin , { model : 'products' , field : 'id' , startAt : 1 });

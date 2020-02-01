@@ -24,6 +24,8 @@
     "build:sass": "node-sass -r build/ -o build/",
     "build:css": "postcss --use autoprefixer dist/*.css -d dist/",
     "copy:build": "cpx -v \"src/**/*\" \"build\"",
+    "build:status": "webpack --profile --json /> stats.json",
+    "analyser:ststus":" webpack-bundle-analyzer stats.json",
     "copy:styles": "cpx -v \"build/**/*.css\" \"release\"",
     "watch": "webpack --display-error-details --watch",
     "start": "webpack-dev-server",
@@ -139,9 +141,6 @@
     "zone.js": "^0.8.26"
   },
   "dependencies": {
-    "@angular/http": "^6.0.0",
-    "@angular/router": "^6.0.0",
-    "@ng-bootstrap/ng-bootstrap": "^3.0.0",
     "body-parser": "^1.18.2",
     "bootstrap": "^4.0.0-beta.3",
     "express": "^4.16.2",

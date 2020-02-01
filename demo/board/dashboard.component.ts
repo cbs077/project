@@ -28,18 +28,20 @@ import { environment } from '../environment';
                       
                       <td>
                           <span>추천순위 : </span>
-                          <button type="button">1위</button>
-                          <button type="button">2위</button>
+                          <button type="button" (click)="makeRank('1')">1위</button>
+                          <button type="button" (click)="makeRank('2')">2위</button>
                           <button type="button">3위</button>
                       </td>
-                      <td></td>
+                      <td>
+                         <div *ngIf="detail_exists === true">
+ <!--               <button type="button" class="btn btn-primary">수정</button>  -->
+                                <button type="button" class="btn btn-primary" (click)="deleteContent($event)">삭제</button>
+                          </div>
+                      </td>
                    </tr>  
                 </tfoot>
            </table>
-           <div class="float-right" *ngIf="detail_exists === true">
- <!--               <button type="button" class="btn btn-primary">수정</button>  -->
-                <button type="button" class="btn btn-primary" (click)="deleteContent($event)">삭제</button>
-           </div>
+
               
    <!--      <button type="button" class="btn btn-info">1</button>
    </div> -->
@@ -98,9 +100,18 @@ export class DashboardComponent implements OnInit, OnChanges {
       this.boardObservableService
             .deleteService( environment.IP + "/api/board/"+ this._id  )
             .subscribe(
-                result => console.log("deleteService: " , result)
+               result => console.log("deleteService: " , result)
     //            error => this.errorMessage = <any>error
      ); 
   }
+  makeRank( val ): void{
+     // var contents = 
+      this.boardObservableService
+           .updateService( environment.IP + "/api/board/rank/"+ this._id , { rank : val } )
+           .subscribe(
+              result => console.log("updateService: " , result)
+              //            error => this.errorMessage = <any>error
+           )
+  }  
     
 }

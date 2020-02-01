@@ -15,7 +15,7 @@ var config = require('./config.js');
 const { isAuthenticated } = require('./middleware/auth');
 
 var autoIncrement = require('mongoose-auto-increment');
-
+//
 // [ CONFIGURE mongoose ]
 
 // CONNECT TO MONGODB SERVER
@@ -38,7 +38,7 @@ mongoose.connect( mongodbatla , function(err) {
     console.log('mongodb connected');
   });
 */  
-var connect = mongoose.connect('mongodb://mongodb/knowhow');
+var connect = mongoose.connect('mongodb://knowhow:sage123!@mongodb/knowhow');
 
 //var connect = mongoose.connect(mongodbatla);	
 autoIncrement.initialize(connect);
@@ -64,6 +64,7 @@ app.use(function(req, res, next) {
 var User = require('./models/user');
 var Admin = require('./routes/admin');
 var Board = require('./routes/board');
+var Service = require('./routes/service');
 //var category = require('./routes/board');
 // [CONFIGURE APP TO USE bodyParser]
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -80,6 +81,7 @@ require('./routes/user.js')(app, User);
 //require('./routes/admin.js')(app, Category);
 app.use('/admin', Admin);
 app.use('/api/board', Board);
+app.use('/api/service', Service);
 
 // [RUN SERVER]
 var server = app.listen(port, function(){

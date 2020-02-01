@@ -6,6 +6,8 @@ const { CheckerPlugin } = require('awesome-typescript-loader');
 
 const commonConfig = require('./webpack.common');
 const { ENV, dir } = require('./helpers');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 
 module.exports = function(options) {
   return webpackMerge(commonConfig({ env: ENV }), {
@@ -60,10 +62,10 @@ module.exports = function(options) {
     },
     plugins: [
       new CheckerPlugin(),
-      //new webpack.optimize.CommonsChunkPlugin({
-      //  name: ['polyfills'],
-      //  minChunks: Infinity
-      //}),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: ['polyfills'],
+        minChunks: Infinity
+      }),
       new HtmlWebpackPlugin({
         template: 'demo/index.ejs',
         chunksSortMode: 'dependency',
@@ -72,7 +74,9 @@ module.exports = function(options) {
       new WebpackNotifierPlugin({
         excludeWarnings: true
       }),
-      new webpack.HotModuleReplacementPlugin()
+      new webpack.HotModuleReplacementPlugin(),
+      new BundleAnalyzerPlugin()
+
     ]
   });
 

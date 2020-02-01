@@ -82,7 +82,6 @@ declare var $: any;
     </nav>
   
 -->
-  <!-- Search bar -->
   <div class="input-group mx-auto col-10 mt-4">    
       <input type="text" class="form-control" placeholder="Search for...">
       <span class="input-group-btn">
@@ -90,48 +89,8 @@ declare var $: any;
       </span>
       <span class="col-1"></span>
   </div>
-  <!-- overview -->
-  <div class="container col-10">
-  <div class="row">
-  <div class="mx-auto col-md-6">
-      <table class="table table-bordered mx-auto col-6 mt-4" >
-        <thead>
-            <tr>    
-                <td> 카테고리 </td>
-                <td> 제목 </td>
-                <td> 총점 </td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of curcontents; let i=index" >
-                <td> {{item.category}} </td>
-                <td> <a routerLink="/dashboard/{{i}}" (click)="handleHeaderRowClick(i)">{{item.title}}</a> </td>
-                <td> 50 </td>
-            </tr>
-        </tbody>  
-      </table> 
-  </div>
-  <div class="mx-auto col-md-6">   
-      <table  class="table table-bordered mx-auto col-6 mt-4" >
-        <thead>
-            <tr>    
-                <td> 카테고리 </td>
-                <td> 제목 </td>
-                <td> 총점 </td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td> 핸드폰 </td>
-                <td> 핸드폰 요금 저렴하게 하는 방법 </td>
-                <td> 30 </td>
-            </tr>
-        </tbody>  
-      </table> 
-  </div>
-  </div>
-  </div>
-  <!-- detail write -->      
+
+ <!-- detail write -->      
     <div class="container mx-auto col-10">
         <app-dashboard class="mx-auto col-8" [curcontents]="curcontents"></app-dashboard> 
      
@@ -181,17 +140,12 @@ export class MainComponent implements OnInit {
         }, {
             name: '분류',
             prop: 'category',
-            width: 10,
+            width: 20,
             widthUnit: '%'
         }, {
             name: '제목',
             prop: 'title',
             width: 50,
-            widthUnit: '%'
-        }, {
-            name: '총점',
-            prop: 'point',
-            width: 10,
             widthUnit: '%'
         }
     ];
@@ -248,4 +202,36 @@ export class MainComponent implements OnInit {
         this.authenticationService.logout();
     }
     getdata() {
-        this.dataSource = ( rpd => this.mock
+        this.dataSource = ( rpd => this.mockDataService.listboard( rpd.from, rpd.count, rpd.orderBy ) );
+        const currentPage = this.activatedRoute.snapshot.queryParams['currentPage'];
+        //      console.log("getdata", this.dataSource);
+        if ( currentPage ) {
+            this.table.currentPage = Number( currentPage );
+        }
+        console.log( "token:", this.token );
+        //         let headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
+        //         let options = new RequestOptions({ headers: headers });
+
+        if ( this.username != undefined ) {
+                this._http.get( environment.IP + '/api/board' )
+                    .subscribe( data => {
+                    this.board = data;
+                    this.mockDataService.setdata( data );
+                    this.table.onPageClicked( 0 );
+                    this.curcontents = this.board;
+                    console.log( "get data:", this.board );
+                },
+                err => {
+                    if( err.error.message == "jwt expired"){
+                        //console.log( 'jwt exipreds')
+                        //this.authenticationService.logout();
+                    }
+                    console.log( 'error:', err.error.message)
+                    
+                })
+        }
+    }
+    checklogin() {
+        this.loginshow = false;
+    }
+}
