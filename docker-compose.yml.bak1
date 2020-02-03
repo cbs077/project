@@ -1,69 +1,85 @@
 version: '3'
-
 services:
-
-  nginx:
-    container_name: nginx
-    image: nginx
+  mongodb:
+    container_name: mongodb
+    image: mongo:3.4.2
+    volumes:
+     - /home/bschoi/mongodb:/data/db
+    ports:
+     - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_PASSWORD: sage123
+      MONGO_INITDB_ROOT_USERNAME: admin
+    networks:
+      - app-network
+    command: [--auth]  
+#    command: mongod --smallfiles --logpath=/dev/null # --quiet 
+    
+  myapp:
+    container_name: myapp1
+    image: myapp_dev14
     build:
       context: .
-      dockerfile: .docker/nginx.dockerfile
+      dockerfile: .docker/nginx.dev.dockerfile
+    command: npm start
     volumes:
-      - ./dist:/usr/share/nginx/html
+      - .:/ng-app      
     ports:
-      - "80:80"
+      - "8083:8083"
       - "443:443"
+      - "80:80"
 
     networks:
       - app-network
 
-  node:
-    container_name: nodeapp
-    image: nodeapp
+  server:
+    container_name: server
+    image: server
     build:
       context: ./Server
       dockerfile: .docker/node.development.dockerfile
     volumes:
-      - ./Server:/var/www/server 
-    environment:
-      - NODE_ENV=development
+      - ./Server:/usr/src/app 
     ports:
       - "3000:3000"
-    depends_on: 
-      - mongodb
+    depends_on:
+      - mongodb  
+   
     networks:
       - app-network
       
-  #No authentication is provided here - JUST A DEMO! That would absolutely
-  #be needed for a "real" application
-  mongodb:
-    container_name: mongodb
-    image: mongo
-    volumes:
-     - ./data:/data/db
+  elasticsearch:                                                           
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1            
+    container_name: elasticsearch                                          
+    volumes:                                                               
+      - esdata:/usr/share/elasticsearch/data     
     networks:
-      - app-network
-
-  postgres:
-    container_name: 'postgres'
-    image: postgres
-    environment:
-      POSTGRES_PASSWORD: password
+      - app-network                                
+    environment:     
+      - http.cors.enabled=true        
+      - http.cors.allow-credentials=true
+      - http.cors.allow-origin="*"    
+      - http.cors.allow-methods=OPTIONS, HEAD, GET, POST, PUT, DELETE
+      - http.cors.allow-headers=Authorization,Content-Type                                      
+      - discovery.type=single-node                                         
+    ports:                                                                 
+      - "9300:9300"                                                        
+      - "9200:9200"                                                        
+                                                                           
+  kibana:                                                                  
+    image: docker.elastic.co/kibana/kibana:7.5.1                          
+    container_name: kibana 
     networks:
-      - app-network
-
-  cadvisor:
-    container_name: cadvisor
-    image: google/cadvisor
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    ports:
-      - "8080:8080"
-    networks:
-      - app-network
+      - app-network                                                    
+    environment:                                                           
+      - ELASTICSEARCH_URL=http://elasticsearch:9200                        
+    links:                                                                 
+      - "elasticsearch:elasticsearch"                                      
+    ports:                                                                 
+      - "5601:5601"                                                        
+                                                                           
+volumes:                                                                   
+  esdata:        
 
 networks:
   app-network:

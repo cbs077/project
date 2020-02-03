@@ -17,6 +17,9 @@ module.exports = function(options) {
  //     host: options.HMR,
 
       host: "0.0.0.0",
+      allowedHosts: [
+    	 "http://175.195.151.203" 
+      ],
       stats: {
         colors: true,
         hash: true,

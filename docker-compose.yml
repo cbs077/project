@@ -3,9 +3,8 @@ services:
   mongodb:
     container_name: mongodb
     image: mongo:3.4.2
-    
     volumes:
-      -/home/bschoi/mongodb:/data/db
+     - /home/bschoi/mongodb:/data/db
     ports:
      - "27017:27017"
     environment:
@@ -24,7 +23,9 @@ services:
       dockerfile: .docker/nginx.dev.dockerfile
     command: npm start
     volumes:
-      - .:/ng-app      
+      - .:/ng-app     
+    environment:
+     - ELASTICSEARCH_URL=http://elasticsearch:9200       
     ports:
       - "8083:8083"
       - "443:443"
@@ -47,11 +48,10 @@ services:
       - mongodb  
    
     networks:
-      - app-network
-      
- 
-#volumes:
-#    db-data:
+      - app-network                                                      
+                                                                           
+volumes:                                                                   
+  esdata:        
 
 networks:
   app-network:

@@ -28,7 +28,7 @@ import { HttpClient } from "@angular/common/http";
 -->
         <div class="form-group">
           <label for="category">분류1:</label>
-          <input [(ngModel)]="category"  class="form-control" >
+          <input [(ngModel)]="category" class="form-control" (blur)="updateTitle()" >
         </div>
         <div class="form-group">
           <label for="title">제목:</label>
@@ -79,12 +79,15 @@ export class WriteComponent implements OnInit {
         if (currentPage) {
             this.table.currentPage = Number(currentPage);
         }*/
+        
+        console.log('ELASTICSEARCH_URL: ', process.env.ELASTICSEARCH_URL); // 'local'
+ 
         this._http.get( environment.IP + '/admin/category' )
         .subscribe( data => {
             console.log( "get data:", data );
             this.categorylist = data ;
         })
-   }
+    }
 
 	valuechange(newValue): void {
 	  //mymodel = newValue;
@@ -102,8 +105,17 @@ export class WriteComponent implements OnInit {
         
       })
 	}
-
-   save(): void {
+	updateTitle(): void{
+	  var query = { "analyzer":  "nori", "text": "여행 저렴하게 가는 방법." }
+	  
+	  this.movieObservableService
+	  .createService( "http://175.195.151.203:9200/_analyze", query )
+	  .subscribe(
+	        result => console.log("updateTitle: " , result)
+	        error => this.errorMessage = <any>error
+	  );   		
+	}
+    save(): void {
      var contents = this.ckeditorContent ;
      var username = JSON.parse(localStorage.getItem("currentUser")) ; 
      
