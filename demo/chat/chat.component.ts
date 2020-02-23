@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, ElementRef, Renderer2, ViewChild } from '@angular/core';
 //import { Router, ActivatedRoute } from '@angular/router';
-//import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs/Subscription';
 
 //import { AlertService, AuthenticationService } from '../_services/index';
 //import { Observable } from 'rxjs/Observable';

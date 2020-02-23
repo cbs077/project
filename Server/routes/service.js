@@ -1,9 +1,19 @@
 const router = require('express').Router();
+const Keyword = require('../models/keyword');
+const Board = require('../models/board');
 const Category = require('../models/category');
-const User = require('../models/user');
-const { createToken } = require('../lib/token');
-const { isAuthenticated } = require('../middleware/auth');
 
+router.get('/keyword', function(req, res){
+	var keyword = req.query.keyword;
+	console.log( 'keyword', keyword )
+	
+    Keyword.find({ "keyword": keyword }, function(err, result){
+    	console.log( 'keyword1', result )
+        if(err) return res.status(500).json({error: err});
+        res.json(result);
+    })
+});
+/*
 router.get('/translate', function(req, res){
 	var title = req.query.title;
 	
@@ -21,8 +31,6 @@ router.get('/translate', function(req, res){
 	  console.log(body);
 	  res.json( body );
 	});
-
-    
 });
-
+*/
 module.exports = router;

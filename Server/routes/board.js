@@ -43,7 +43,7 @@ router.put('/rank/:board_id', function(req, res){
         res.json( { message: 'board updated' } );
     })
 });
-router.get('/' , isAuthenticated,  function(req,res){
+router.get('/' , /*isAuthenticated,*/  function(req,res){
     console.log("board");
     //var Board = new Board();
     Board.find(function(err, board){

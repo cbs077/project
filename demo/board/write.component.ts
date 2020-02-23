@@ -1,5 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
+import {of, pipe } from 'rxjs';
+import { mergeMap, switchMap, retry, 
+         map, catchError, filter, scan } from 'rxjs/operators';
+import {Router} from '@angular/router';
+
 import {MockDataService} from '../mock-data.service';
 import {PageRequestData} from '../component-wrapper/src/app/page-request-data';
 import {TableResultsPage} from '../component-wrapper/src/app/table-results-page';
@@ -13,29 +18,34 @@ import { environment } from '../environment';
 import { HttpClient } from "@angular/common/http";
 
 @Component({
-//    selector: 'app-test-component',
-//  templateUrl: './test.component.html',
     template:`
          <div class="mx-auto" style="width:80% ; margin-top:30px; margin-left:auto; margin-right:auto;">
-<!--         
-         <ul>    
-            <span style="width:30%">분류
-            <input [(ngModel)]="category"  class="form-control col-3"></span>
-        
-            <span style="width:30%">제목</span>   
-            <input [(ngModel)]="title"  class="form-control col-9">
-         </ul>
--->
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="category">분류1:</label>
           <input [(ngModel)]="category" class="form-control" (blur)="updateTitle()" >
-        </div>
+        </div> -->
         <div class="form-group">
           <label for="title">제목:</label>
-          <input [(ngModel)]="title" (ngModelChange)="valuechange($event)" class="form-control" >
+          <input [(ngModel)]="title" class="form-control" (blur)="updateTitle()" >
         </div>
-
-         <ckeditor
+        <!--
+        <div>
+          <ul class="list-group">
+		        <li class="list-group-item"  *ngFor="let item of itemsList">
+		          <input type="radio"  name="list_name" value="{{item.value}}" /> 
+		          {{item.name}}
+		          
+		        </li>
+		  </ul>
+		</div>
+		-->
+		<!-- Default unchecked -->
+		<div class="custom-control custom-radio"  *ngFor="let item of itemsList">
+		  <input type="radio" class="custom-control-input" id="{{item.name}}" name="defaultExampleRadios" value="{{item.value}}" (change)="onItemChange( item.value )" mdbInput>
+		  <label class="custom-control-label" for="{{item.name}}">{{item.value}}</label>
+		</div>
+				
+        <ckeditor
                   [(ngModel)]="ckeditorContent">
                     <ckbutton [name]="'saveButton'"
                       [command]="'saveCmd'"
@@ -51,7 +61,7 @@ import { HttpClient } from "@angular/common/http";
      </div>
 `,
 
-    styleUrls: ['./main.component.css']
+    styleUrls: ['./write.component.css']
 })
 export class WriteComponent implements OnInit {
 
@@ -60,6 +70,11 @@ export class WriteComponent implements OnInit {
     ckeditorContent: string;
     categorylist: any;
 
+	radioSel:any;
+	radioSelected:string;
+	radioSelectedString:string;
+	itemsList:  any;
+	
     @ViewChild(TableComponent) table: TableComponent;
     dataSource: (requestPageData: PageRequestData) => Observable<TableResultsPage>;
     
@@ -69,19 +84,11 @@ export class WriteComponent implements OnInit {
     constructor(private mockDataService: MockDataService,
                 private activatedRoute: ActivatedRoute,
                 private movieObservableService: WebApiObservableService,
-                private _http: HttpClient ) {
+                private _http: HttpClient, 
+                private router: Router) {
     }
 
     ngOnInit(): void {
-        /*this.dataSource = (rpd => this.mockDataService.listboard(rpd.from, rpd.count, rpd.orderBy));
-        const currentPage = this.activatedRoute.snapshot.queryParams['currentPage'];
-
-        if (currentPage) {
-            this.table.currentPage = Number(currentPage);
-        }*/
-        
-        console.log('ELASTICSEARCH_URL: ', process.env.ELASTICSEARCH_URL); // 'local'
- 
         this._http.get( environment.IP + '/admin/category' )
         .subscribe( data => {
             console.log( "get data:", data );
@@ -105,14 +112,30 @@ export class WriteComponent implements OnInit {
         
       })
 	}
+	onItemChange(value){
+	   console.log(" Value is : ", value );
+	   this.category = value
+	}	
 	updateTitle(): void{
-	  var query = { "analyzer":  "nori", "text": "여행 저렴하게 가는 방법." }
+	  var query = { "analyzer":  "nori_analyzer", "text": this.title }
 	  
 	  this.movieObservableService
-	  .createService( "http://175.195.151.203:9200/_analyze", query )
+	  .createService( "http://175.195.151.203:9200/korean_analyzer/_analyze", query )
+	  .pipe(
+          switchMap( wordlist => {
+              let category = wordlist;
+              return this._http.get( environment.IP + '/api/service/keyword?keyword='+ '대출' );
+          }),
+          catchError(err => of([]))
+      )
 	  .subscribe(
-	        result => console.log("updateTitle: " , result)
-	        error => this.errorMessage = <any>error
+	        result => {  
+	           this.itemsList = []	
+	           /*result.forEach((key) => {
+			      this.itemsList.push({ "name": key.root, "value": key.root })
+			   })
+			   console.log("updateTitle: " , result)*/
+		    }
 	  );   		
 	}
     save(): void {
@@ -126,8 +149,10 @@ export class WriteComponent implements OnInit {
      this.movieObservableService
      .createService( environment.IP + '/api/board', this.contents )
      .subscribe(
-            result => console.log("5. createService: " , result)
-            error => this.errorMessage = <any>error
+            result => {
+            	this.router.navigateByUrl('/main');
+            	console.log("5. createService: " , result)
+            }
   	 );   
   }
 

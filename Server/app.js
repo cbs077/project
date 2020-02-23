@@ -76,9 +76,7 @@ app.use(express.static('public'));
 var port = process.env.PORT || 3000 ;
 // [CONFIGURE ROUTER]
 
-//require('./routes/board.js')(app, Board);
 require('./routes/user.js')(app, User);
-//require('./routes/admin.js')(app, Category);
 app.use('/admin', Admin);
 app.use('/api/board', Board);
 app.use('/api/service', Service);
