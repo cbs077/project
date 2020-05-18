@@ -2,7 +2,7 @@
 
 // [LOAD PACKAGES]
 var cors = require('cors');
-
+var path = require('path');
 var express     = require('express');
 var app         = express();
 var bodyParser  = require('body-parser');
@@ -38,7 +38,7 @@ mongoose.connect( mongodbatla , function(err) {
     console.log('mongodb connected');
   });
 */  
-var connect = mongoose.connect('mongodb://knowhow:sage123!@mongodb/knowhow');
+var connect = mongoose.connect('mongodb://admin:sage123@mongodb/knowhow');
 
 //var connect = mongoose.connect(mongodbatla);	
 autoIncrement.initialize(connect);
@@ -67,10 +67,15 @@ var Board = require('./routes/board');
 var Service = require('./routes/service');
 //var category = require('./routes/board');
 // [CONFIGURE APP TO USE bodyParser]
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ limit : "200mb",extended: true }));
+app.use(bodyParser.json({ limit : "200mb",extended: true }));
 app.use(express.static('public'));
-//
+//app.use(express.json({ limit : "200mb", extended: true  }));
+//app.use(express.urlencoded({ limit:"200mb", extended: true, parameterLimit: 1000000}));
+app.use('/upload', express.static(path.join(__dirname, '/upload')));
+
+
+console.log("__dirname", __dirname)
 // [CONFIGURE SERVER PORT]
 
 var port = process.env.PORT || 3000 ;

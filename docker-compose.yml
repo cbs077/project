@@ -10,29 +10,30 @@ services:
     environment:
       MONGO_INITDB_ROOT_PASSWORD: sage123
       MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_DATABASE: knowhow
     networks:
       - app-network
     command: [--auth]  
 #    command: mongod --smallfiles --logpath=/dev/null # --quiet 
     
-  myapp:
-    container_name: myapp1
-    image: myapp_dev14
-    build:
-      context: .
-      dockerfile: .docker/nginx.dev.dockerfile
-    command: npm start
-    volumes:
-      - .:/ng-app     
-    environment:
-     - ELASTICSEARCH_URL=http://elasticsearch:9200       
-    ports:
-      - "8083:8083"
-      - "443:443"
-      - "80:80"
+  # myapp:
+  #   container_name: myapp1
+  #   image: myapp_dev14
+  #   build:
+  #     context: .
+  #     dockerfile: .docker/nginx.dev.dockerfile
+  #   command: npm start
+  #   volumes:
+  #     - .:/ng-app     
+  #   environment:
+  #    - ELASTICSEARCH_URL=http://elasticsearch:9200       
+  #   ports:
+  #     - "8083:8083"
+  #     - "443:443"
+  #     - "80:80"
 
-    networks:
-      - app-network
+  #   networks:
+  #     - app-network
 
   server:
     container_name: server
@@ -42,6 +43,8 @@ services:
       dockerfile: .docker/node.development.dockerfile
     volumes:
       - ./Server:/usr/src/app 
+      - /home/ubuntu/uploads:/usr/src/app/upload
+
     ports:
       - "3000:3000"
     depends_on:

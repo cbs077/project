@@ -4,8 +4,8 @@ FROM node:8-alpine
 LABEL author="Dan Wahlin" 
 
 
-WORKDIR /var/www/server
-COPY Server .
+WORKDIR /usr/src/app
+#COPY . .
 RUN npm install nodemon -g 
 
 EXPOSE 3000

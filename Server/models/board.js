@@ -17,4 +17,4 @@ var boardSchema = new Schema({
 });
 boardSchema.plugin( autoIncrement.plugin , { model : 'products' , field : 'id' , startAt : 1 });
 
-module.exports = mongoose.model('board', boardSchema);
+module.exports = mongoose.model('boards', boardSchema);
