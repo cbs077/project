@@ -14,8 +14,8 @@ services:
     networks:
       - app-network
     command: [--auth]  
-#    command: mongod --smallfiles --logpath=/dev/null # --quiet 
-    
+
+  # command: mongod --smallfiles --logpath=/dev/null # --quiet 
   # myapp:
   #   container_name: myapp1
   #   image: myapp_dev14
@@ -37,16 +37,16 @@ services:
 
   server:
     container_name: server
-    image: server
+    #image: server
     build:
-      context: ./Server
-      dockerfile: .docker/node.development.dockerfile
+      context: ./Server  # 위치 
+      dockerfile: .docker/node.development.dockerfile # 위치에서 docker위치
     volumes:
       - ./Server:/usr/src/app 
       - /home/ubuntu/uploads:/usr/src/app/upload
-
     ports:
       - "3000:3000"
+      - "9229:9229"
     depends_on:
       - mongodb  
    

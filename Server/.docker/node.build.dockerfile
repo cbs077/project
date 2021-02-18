@@ -11,6 +11,7 @@ RUN npm install nodemon -g
 
 EXPOSE 3000
 
-ENTRYPOINT ["nodemon", "app.js"]
+#ENTRYPOINT ["nodemon", "app.js"]
+ENTRYPOINT ["pm2", "start", "app.js"]
 
 

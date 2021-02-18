@@ -38,7 +38,7 @@ mongoose.connect( mongodbatla , function(err) {
     console.log('mongodb connected');
   });
 */  
-var connect = mongoose.connect('mongodb://admin:sage123@mongodb/knowhow');
+var connect = mongoose.connect('mongodb://admin:sage123@localhost/knowhow');
 
 //var connect = mongoose.connect(mongodbatla);	
 autoIncrement.initialize(connect);
@@ -65,6 +65,7 @@ var User = require('./models/user');
 var Admin = require('./routes/admin');
 var Board = require('./routes/board');
 var Service = require('./routes/service');
+var info = require('./routes/info');
 //var category = require('./routes/board');
 // [CONFIGURE APP TO USE bodyParser]
 app.use(bodyParser.urlencoded({ limit : "200mb",extended: true }));
@@ -85,6 +86,7 @@ require('./routes/user.js')(app, User);
 app.use('/admin', Admin);
 app.use('/api/board', Board);
 app.use('/api/service', Service);
+app.use('/api/info', info);
 
 // [RUN SERVER]
 var server = app.listen(port, function(){

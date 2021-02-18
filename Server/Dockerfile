@@ -7,11 +7,12 @@ FROM node:8-alpine as builder
 COPY package.json  ./
 
 RUN npm set progress=false && npm config set depth 0 && npm cache clean --force
-
 ## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
 RUN npm i && mkdir /ng-app && cp -R ./node_modules ./ng-app
 
+
 WORKDIR /ng-app
+RUN npm install -g pm2 node-gyp
 
 COPY . .
 
@@ -38,6 +39,6 @@ COPY . .
 WORKDIR /ng-app
 
 EXPOSE 8080
-CMD [ "npm", "start" ]
+#CMD [ "pm2", "start", "app.js" ]
 
-#CMD node app.js 
+CMD node app1.js 
