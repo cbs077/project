@@ -13,12 +13,9 @@ const router = require('express').Router()
 const jwt = require('jsonwebtoken');
 var config = require('./config.js');
 const { isAuthenticated } = require('./middleware/auth');
-
+//require('./middleware/sitemapMiddleware');
 var autoIncrement = require('mongoose-auto-increment');
-//
-// [ CONFIGURE mongoose ]
 
-// CONNECT TO MONGODB SERVER
 var db = mongoose.connection;
 
 db.on('error', console.error);
@@ -38,7 +35,7 @@ mongoose.connect( mongodbatla , function(err) {
     console.log('mongodb connected');
   });
 */  
-var connect = mongoose.connect('mongodb://admin:sage123@localhost/knowhow');
+var connect = mongoose.connect('mongodb://admin:sage123@rankanswer.com/knowhow');
 
 //var connect = mongoose.connect(mongodbatla);	
 autoIncrement.initialize(connect);
@@ -87,6 +84,41 @@ app.use('/admin', Admin);
 app.use('/api/board', Board);
 app.use('/api/service', Service);
 app.use('/api/info', info);
+
+app.get('/sitemap.xml', function(req, res) {
+  res.header('Content-Type', 'application/xml');
+  res.header('Content-Encoding', 'gzip');
+  // if we have a cached entry send it
+  if (sitemap) {
+    res.send(sitemap)
+    return
+  }
+
+  try {
+    const smStream = new SitemapStream({ hostname: 'https://example.com/' })
+    const pipeline = smStream.pipe(createGzip())
+
+    // pipe your entries or directly write them.
+    smStream.write({ url: '/page-1/',  changefreq: 'daily', priority: 0.3 })
+    smStream.write({ url: '/page-2/',  changefreq: 'monthly',  priority: 0.7 })
+    smStream.write({ url: '/page-3/'})    // changefreq: 'weekly',  priority: 0.5
+    smStream.write({ url: '/page-4/',   img: "http://urlTest.com" })
+    /* or use
+    Readable.from([{url: '/page-1'}...]).pipe(smStream)
+    if you are looking to avoid writing your own loop.
+    */
+
+    // cache the response
+    streamToPromise(pipeline).then(sm => sitemap = sm)
+    // make sure to attach a write stream such as streamToPromise before ending
+    smStream.end()
+    // stream write the response
+    pipeline.pipe(res).on('error', (e) => {throw e})
+  } catch (e) {
+    console.error(e)
+    res.status(500).end()
+  }
+})
 
 // [RUN SERVER]
 var server = app.listen(port, function(){
